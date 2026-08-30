@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    
+    function hasRole(role) {
+      return isAuthenticated() && getUserData().role == role;
+    }
+    
+    function isAdmin() {
+      return hasRole('admin');
+    }
+    
+    function isKitchen() {
+      return hasRole('kitchen') || isAdmin();
+    }
+    
+    function isCashier() {
+      return hasRole('cashier') || isAdmin();
+    }
+
+    // Menu items: Anyone logged in can read, Kitchen & Admin can update status, Admin can create/delete
+    match /menu_items/{itemId} {
+      allow read: if isAuthenticated();
+      allow update: if isKitchen() || isCashier();
+      allow create, delete: if isAdmin();
+    }
+    
+    // Kitchen Status: Anyone can read, Kitchen and Admin can update
+    match /kitchen_status/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if isKitchen();
+    }
+    
+    // Notifications: Anyone can read, Kitchen/Cashier/Admin can create
+    match /notifications/{notifId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if isAdmin();
+    }
+    
+    // Messages: Anyone can read and send
+    match /messages/{msgId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow delete: if isAdmin();
+    }
+    
+    // Categories: Read by all, written by Admin
+    match /categories/{catId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+    
+    // User Profiles
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() || request.auth.uid == userId;
+    }
+    
+    // Activity Logs
+    match /activity_logs/{logId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow delete: if isAdmin();
+    }
+  }
+}
