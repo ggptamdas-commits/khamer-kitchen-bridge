@@ -3,13 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>مطعم خامر | Khamer Kitchen Command Center</title>
-  <meta name="description" content="Cinematic MotionSites-Style Real-Time Kitchen ↔ Cashier Operations Command Center for Khamer Restaurant" />
-  
-  <!-- Premium Typography: IBM Plex Sans Arabic, Cairo, Plus Jakarta Sans & JetBrains Mono -->
+  <title>مطعم خامر | Khamer Kitchen Bridge</title>
+  <meta name="description" content="Professional Real-Time Kitchen ↔ Cashier Communication Platform for Khamer Restaurant" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Khamer Bridge" />
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍽️</text></svg>" />
+
+  <!-- Premium Typography: IBM Plex Sans Arabic for Arabic & Plus Jakarta Sans for English/Numbers -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
 
   <!-- Firebase Compat Libraries for 100% Zero-Build Standalone Deployment -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -18,74 +23,109 @@
 
   <style>
     /* ==========================================================================
-       1. BESPOKE MOTIONSITES RESTAURANT TOKENS & RESET
+       1. BESPOKE RESTAURANT SAAS DESIGN TOKENS (DARK KDS / LIGHT POS)
        ========================================================================== */
     :root {
-      --font-ar: 'IBM Plex Sans Arabic', 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-ar: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-en: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
       
-      /* MotionSites Dark Command Center Palette (Default) */
-      --bg-base: #050505;
-      --bg-surface: #0B0B0B;
-      --bg-secondary: #111111;
-      --bg-elevated: #171717;
-      --border: rgba(255, 255, 255, 0.08);
-      --border-subtle: rgba(255, 255, 255, 0.04);
-      --border-focus: rgba(217, 119, 6, 0.5);
+      /* Light POS Palette */
+      --bg-base: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --bg-hover: #e2e8f0;
       
-      --text-primary: #FFFFFF;
-      --text-secondary: rgba(255, 255, 255, 0.55);
-      --text-tertiary: rgba(255, 255, 255, 0.35);
+      --border-subtle: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --border-focus: #ea580c;
       
-      --brand: #D97706;
-      --brand-hover: #B45309;
-      --brand-glow: rgba(217, 119, 6, 0.28);
-      --brand-gradient: linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #B45309 100%);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-tertiary: #94a3b8;
+      --text-on-accent: #ffffff;
       
-      --status-avail: #10B981;
-      --status-avail-bg: rgba(16, 185, 129, 0.12);
-      --status-avail-glow: rgba(16, 185, 129, 0.3);
+      /* Brand Accent - Warm Culinary Terracotta / Ember */
+      --brand: #e04f16;
+      --brand-hover: #c23e0e;
+      --brand-light: #fff7ed;
+      --brand-border: #ffedd5;
       
-      --status-low: #F59E0B;
-      --status-low-bg: rgba(245, 158, 11, 0.12);
-      --status-low-glow: rgba(245, 158, 11, 0.3);
+      /* Operational High-Contrast Status Tokens */
+      --status-avail: #16a34a;
+      --status-avail-bg: #f0fdf4;
+      --status-avail-border: #bbf7d0;
       
-      --status-delay: #F97316;
-      --status-delay-bg: rgba(249, 115, 22, 0.12);
-      --status-delay-glow: rgba(249, 115, 22, 0.35);
+      --status-low: #d97706;
+      --status-low-bg: #fffbeb;
+      --status-low-border: #fde68a;
       
-      --status-out: #EF4444;
-      --status-out-bg: rgba(239, 68, 68, 0.12);
-      --status-out-glow: rgba(239, 68, 68, 0.3);
+      --status-delay: #ea580c;
+      --status-delay-bg: #fff7ed;
+      --status-delay-border: #fed7aa;
       
-      --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(255, 255, 255, 0.04);
-      --card-shadow-hover: 0 20px 45px -12px rgba(0, 0, 0, 0.95), 0 0 1px 1px rgba(255, 255, 255, 0.1);
+      --status-out: #dc2626;
+      --status-out-bg: #fef2f2;
+      --status-out-border: #fecaca;
       
-      --transition-spring: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-      --transition-fast: all 0.15s ease-out;
-      
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-xl: 20px;
       --radius-full: 9999px;
+      
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+      --shadow-sheet: 0 -10px 25px -5px rgba(0, 0, 0, 0.12);
+      
+      --nav-height-desktop: 58px;
+      --nav-height-mobile: 62px;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
-    body[data-theme="light"] {
-      --bg-base: #F8FAFC;
-      --bg-surface: #FFFFFF;
-      --bg-secondary: #F1F5F9;
-      --bg-elevated: #E2E8F0;
-      --border: rgba(0, 0, 0, 0.08);
-      --border-subtle: rgba(0, 0, 0, 0.04);
-      --border-focus: rgba(217, 119, 6, 0.5);
+    body[data-theme="dark"] {
+      --bg-base: #090d16;
+      --bg-surface: #111827;
+      --bg-surface-elevated: #1e293b;
+      --bg-subtle: #1f2937;
+      --bg-hover: #374151;
       
-      --text-primary: #0F172A;
-      --text-secondary: #64748B;
-      --text-tertiary: #94A3B8;
+      --border-subtle: #1e293b;
+      --border-strong: #334155;
+      --border-focus: #f97316;
       
-      --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 0 1px 1px rgba(0, 0, 0, 0.03);
-      --card-shadow-hover: 0 20px 35px -10px rgba(0, 0, 0, 0.12), 0 0 1px 1px rgba(0, 0, 0, 0.06);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-tertiary: #64748b;
+      --text-on-accent: #ffffff;
+      
+      --brand: #f97316;
+      --brand-hover: #ea580c;
+      --brand-light: rgba(249, 115, 22, 0.15);
+      --brand-border: rgba(249, 115, 22, 0.3);
+      
+      --status-avail: #22c55e;
+      --status-avail-bg: rgba(34, 197, 94, 0.15);
+      --status-avail-border: rgba(34, 197, 94, 0.3);
+      
+      --status-low: #f59e0b;
+      --status-low-bg: rgba(245, 158, 11, 0.15);
+      --status-low-border: rgba(245, 158, 11, 0.3);
+      
+      --status-delay: #fb923c;
+      --status-delay-bg: rgba(251, 146, 60, 0.15);
+      --status-delay-border: rgba(251, 146, 60, 0.3);
+      
+      --status-out: #ef4444;
+      --status-out-bg: rgba(239, 68, 68, 0.18);
+      --status-out-border: rgba(239, 68, 68, 0.4);
+      
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+      --shadow-sheet: 0 -10px 30px rgba(0, 0, 0, 0.8);
     }
 
     *, *::before, *::after {
@@ -101,251 +141,46 @@
       background-color: var(--bg-base);
       color: var(--text-primary);
       font-family: var(--font-ar);
-      line-height: 1.5;
+      line-height: 1.45;
       overflow-x: hidden;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      perspective: 1000px;
+      touch-action: manipulation;
     }
 
     html[dir="ltr"] body {
       font-family: var(--font-en);
     }
 
-    /* Custom Desktop Cursor */
-    @media (hover: hover) and (pointer: fine) {
-      body {
-        cursor: default;
-      }
-      .custom-cursor-dot {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 8px;
-        height: 8px;
-        background: #F59E0B;
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 999999;
-        transform: translate(-50%, -50%);
-        transition: width 0.2s, height 0.2s, background 0.2s;
-        box-shadow: 0 0 10px rgba(245, 158, 11, 0.8);
-      }
-      .custom-cursor-ring {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 32px;
-        height: 32px;
-        border: 1.5px solid rgba(245, 158, 11, 0.5);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 999998;
-        transform: translate(-50%, -50%);
-        transition: transform 0.08s ease-out, width 0.25s, height 0.25s, border-color 0.25s;
-      }
-      body.cursor-hover .custom-cursor-dot {
-        width: 12px;
-        height: 12px;
-        background: #FFFFFF;
-      }
-      body.cursor-hover .custom-cursor-ring {
-        width: 48px;
-        height: 48px;
-        border-color: rgba(245, 158, 11, 0.9);
-        background: rgba(245, 158, 11, 0.08);
-      }
-    }
-    @media (hover: none) or (pointer: coarse) {
-      .custom-cursor-dot, .custom-cursor-ring {
-        display: none !important;
-      }
-    }
-
-    /* ==========================================================================
-       2. CINEMATIC APP INTRO OVERLAY
-       ========================================================================== */
-    .cinematic-intro {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: radial-gradient(circle at 50% 50%, #171717 0%, #050505 85%);
-      z-index: 99999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #FFFFFF;
-      overflow: hidden;
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
-    }
-    .cinematic-intro.hidden {
-      opacity: 0;
-      transform: scale(1.05);
-      filter: blur(14px);
-      pointer-events: none;
-    }
-    .intro-char-khamer {
-      font-size: clamp(5rem, 15vw, 10rem);
-      font-weight: 800;
-      color: #F59E0B;
-      text-shadow: 0 0 60px rgba(245, 158, 11, 0.6), 0 0 120px rgba(217, 119, 6, 0.3);
-      opacity: 0;
-      transform: scale(0.6) translateY(20px);
-      filter: blur(12px);
-      animation: introCharReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
-    }
-    .intro-title-arabic {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-top: 0.5rem;
-      background: linear-gradient(90deg, #FFFFFF 0%, #FDE68A 50%, #FFFFFF 100%);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      opacity: 0;
-      transform: translateY(15px);
-      filter: blur(8px);
-      animation: introFadeSweep 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.8s;
-    }
-    .intro-title-bridge {
-      font-size: clamp(1rem, 2.5vw, 1.5rem);
-      font-family: var(--font-en);
-      font-weight: 800;
-      letter-spacing: 0.35em;
-      color: rgba(255, 255, 255, 0.8);
-      margin-top: 0.4rem;
-      opacity: 0;
-      transform: translateY(10px);
-      animation: introFadeUp 1.0s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.4s;
-    }
-    .intro-subtitle-live {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-      font-family: var(--font-mono);
-      color: #10B981;
-      letter-spacing: 0.2em;
-      margin-top: 1.5rem;
-      padding: 0.4rem 1.2rem;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      border-radius: 9999px;
-      opacity: 0;
-      animation: introFadeUp 0.8s ease forwards 2.0s;
-    }
-    .intro-skip-btn {
-      position: absolute;
-      bottom: 2.5rem;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: rgba(255, 255, 255, 0.7);
-      padding: 0.5rem 1.25rem;
-      border-radius: 9999px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-      transition: all 0.2s;
-    }
-    .intro-skip-btn:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: #FFFFFF;
-    }
-
-    @keyframes introCharReveal {
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-        filter: blur(0);
-      }
-    }
-    @keyframes introFadeSweep {
-      0% {
-        opacity: 0;
-        transform: translateY(15px);
-        filter: blur(8px);
-        background-position: 0% center;
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-        filter: blur(0);
-        background-position: 200% center;
-      }
-    }
-    @keyframes introFadeUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* ==========================================================================
-       3. FLOATING GLASSMORPHIC NAVIGATION
-       ========================================================================== */
-    .floating-nav-wrapper {
-      position: sticky;
-      top: 1rem;
-      z-index: 1000;
-      width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 1rem;
-      pointer-events: none;
-    }
     .app-header {
-      pointer-events: auto;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--nav-height-desktop);
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(11, 11, 11, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-full);
-      padding: 0.65rem 1.25rem;
-      box-shadow: 0 10px 35px -10px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(255, 255, 255, 0.05);
-      transition: padding 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, box-shadow 0.3s ease;
-    }
-    body[data-theme="light"] .app-header {
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.04);
-    }
-    .app-header.navbar-scrolled {
-      padding: 0.45rem 1rem;
-      background: rgba(8, 8, 8, 0.94);
-      box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.95);
-    }
-    body[data-theme="light"] .app-header.navbar-scrolled {
-      background: rgba(255, 255, 255, 0.96);
+      padding: 0 1.25rem;
+      box-shadow: var(--shadow-sm);
     }
 
     .brand-group {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      text-decoration: none;
-      color: inherit;
+      user-select: none;
     }
     .brand-mark {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: var(--brand-gradient);
-      color: #FFFFFF;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      background: var(--brand);
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
-      font-weight: 800;
-      box-shadow: 0 0 18px var(--brand-glow);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .brand-mark:hover {
-      transform: scale(1.08) rotate(5deg);
+      font-weight: 700;
+      font-size: 1.2rem;
     }
     .brand-meta {
       display: flex;
@@ -354,59 +189,40 @@
     .brand-title {
       font-size: 0.95rem;
       font-weight: 700;
-      letter-spacing: -0.01em;
       line-height: 1.2;
     }
     .brand-subtitle {
-      font-size: 0.65rem;
-      font-family: var(--font-en);
-      font-weight: 600;
-      letter-spacing: 0.15em;
+      font-size: 0.7rem;
       color: var(--text-tertiary);
+      font-weight: 500;
     }
 
-    /* Segmented Navigation Tabs */
     .desktop-nav-tabs {
       display: flex;
       align-items: center;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-full);
+      background-color: var(--bg-subtle);
       padding: 3px;
-      position: relative;
-    }
-    body[data-theme="light"] .desktop-nav-tabs {
-      background: rgba(0, 0, 0, 0.04);
+      border-radius: var(--radius-md);
+      gap: 2px;
     }
     .d-nav-btn {
-      position: relative;
-      z-index: 2;
       display: flex;
       align-items: center;
-      gap: 0.45rem;
-      padding: 0.45rem 1.15rem;
-      border-radius: var(--radius-full);
+      gap: 0.5rem;
+      padding: 0.45rem 1rem;
+      border-radius: var(--radius-sm);
       border: none;
       background: transparent;
       color: var(--text-secondary);
       font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
-      transition: color 0.25s ease, transform 0.2s ease;
-    }
-    .d-nav-btn:hover {
-      color: var(--text-primary);
-      transform: translateY(-1px);
+      transition: all 0.15s ease;
     }
     .d-nav-btn.active {
-      color: #FFFFFF;
-      background: rgba(255, 255, 255, 0.12);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-    }
-    body[data-theme="light"] .d-nav-btn.active {
-      background: #FFFFFF;
-      color: #0F172A;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      background-color: var(--bg-surface);
+      color: var(--brand);
+      box-shadow: var(--shadow-sm);
     }
 
     .header-controls {
@@ -415,772 +231,390 @@
       gap: 0.5rem;
     }
     .conn-pill {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      padding: 0.35rem 0.75rem;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 0.25rem 0.6rem;
       border-radius: var(--radius-full);
-      font-size: 0.72rem;
-      font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 700;
+      background: var(--status-avail-bg);
       color: var(--status-avail);
+      border: 1px solid var(--status-avail-border);
     }
     .dot-pulse {
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: var(--status-avail);
-      box-shadow: 0 0 8px var(--status-avail);
-      animation: liveDotPulse 2s infinite ease-in-out;
+      background: currentColor;
     }
-    @keyframes liveDotPulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.4); opacity: 0.6; }
-    }
-
-    /* Sound Equalizer Indicator */
-    .sound-eq-box {
-      display: flex;
-      align-items: flex-end;
-      gap: 2px;
-      height: 14px;
-      width: 14px;
-    }
-    .eq-bar {
-      flex: 1;
-      background: var(--brand);
-      border-radius: 1px;
-      transition: height 0.2s;
-    }
-    .eq-bar-1 { height: 40%; animation: eqBounce1 0.7s infinite alternate ease-in-out; }
-    .eq-bar-2 { height: 80%; animation: eqBounce2 0.9s infinite alternate ease-in-out; }
-    .eq-bar-3 { height: 60%; animation: eqBounce3 0.8s infinite alternate ease-in-out; }
-    .sound-disabled .eq-bar {
-      animation: none;
-      height: 20%;
-      background: var(--text-tertiary);
-    }
-    @keyframes eqBounce1 { from { height: 30%; } to { height: 100%; } }
-    @keyframes eqBounce2 { from { height: 100%; } to { height: 40%; } }
-    @keyframes eqBounce3 { from { height: 50%; } to { height: 90%; } }
 
     .btn-header-icon {
-      position: relative;
       width: 36px;
       height: 36px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
       color: var(--text-secondary);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.2s;
-    }
-    body[data-theme="light"] .btn-header-icon {
-      background: rgba(0, 0, 0, 0.03);
-    }
-    .btn-header-icon:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: var(--text-primary);
-      transform: translateY(-2px);
+      position: relative;
     }
     .badge-dot {
       position: absolute;
       top: 3px;
       right: 3px;
       background: var(--status-out);
-      color: #FFFFFF;
+      color: #fff;
       font-size: 0.65rem;
       font-weight: 700;
+      border-radius: var(--radius-full);
       min-width: 16px;
       height: 16px;
-      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 6px var(--status-out);
     }
 
     .user-profile-trigger {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.25rem 0.65rem 0.25rem 0.25rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
+      padding: 0.25rem 0.5rem 0.25rem 0.25rem;
       border-radius: var(--radius-full);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-subtle);
       cursor: pointer;
       color: var(--text-primary);
-      transition: all 0.2s;
-    }
-    .user-profile-trigger:hover {
-      background: rgba(255, 255, 255, 0.1);
-      transform: translateY(-1px);
     }
     .user-avatar-circle {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
-      background: var(--brand-gradient);
-      color: #FFFFFF;
-      font-weight: 700;
-      font-size: 0.8rem;
+      background: var(--brand);
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
     }
     .user-station-tag {
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 700;
-      padding: 0.15rem 0.5rem;
+      padding: 0.1rem 0.45rem;
       border-radius: var(--radius-full);
-      text-transform: uppercase;
     }
-    .station-kitchen { background: rgba(217, 119, 6, 0.18); color: #F59E0B; }
-    .station-cashier { background: rgba(16, 185, 129, 0.18); color: #10B981; }
-    .station-admin { background: rgba(139, 92, 246, 0.18); color: #A78BFA; }
+    .station-kitchen { background: rgba(224, 79, 22, 0.15); color: #e04f16; }
+    .station-cashier { background: rgba(22, 163, 74, 0.15); color: #16a34a; }
+    .station-admin { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
 
-    /* ==========================================================================
-       4. COMMAND CENTER HERO & FLOW VISUALIZATION
-       ========================================================================== */
-    .command-center-hero {
-      width: 100%;
-      max-width: 1400px;
-      margin: 1.5rem auto 1rem;
-      padding: 2rem 2.5rem;
-      background: radial-gradient(circle at 50% -20%, rgba(217, 119, 6, 0.12) 0%, rgba(11, 11, 11, 0.85) 60%), #0B0B0B;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--card-shadow);
-      position: relative;
-      overflow: hidden;
-    }
-    body[data-theme="light"] .command-center-hero {
-      background: radial-gradient(circle at 50% -20%, rgba(217, 119, 6, 0.1) 0%, rgba(255, 255, 255, 0.95) 70%), #FFFFFF;
-    }
-    .hero-header-row {
+    .workload-strip {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0.5rem 1.25rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 1.5rem;
-      position: relative;
-      z-index: 2;
+      gap: 0.5rem;
     }
-    .hero-title-wrap {
-      flex: 1;
-      min-width: 280px;
-    }
-    .hero-badge-live {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.25rem 0.75rem;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      border-radius: var(--radius-full);
-      font-size: 0.75rem;
-      font-family: var(--font-mono);
+    .workload-label {
+      font-size: 0.8rem;
       font-weight: 700;
-      color: var(--status-avail);
-      margin-bottom: 0.75rem;
-    }
-    .hero-heading {
-      font-size: clamp(1.75rem, 3.5vw, 2.75rem);
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #FFFFFF 30%, rgba(255, 255, 255, 0.7) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    body[data-theme="light"] .hero-heading {
-      background: linear-gradient(135deg, #0F172A 30%, #334155 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .hero-arabic-sub {
-      font-size: clamp(1rem, 1.8vw, 1.25rem);
-      font-weight: 600;
-      color: var(--brand);
-      margin-top: 0.3rem;
-    }
-    .hero-tagline {
-      font-size: 0.85rem;
-      color: var(--text-tertiary);
-      margin-top: 0.4rem;
-      font-family: var(--font-mono);
-    }
-
-    /* Communication Flow SVG Network */
-    .bridge-network-vis {
-      width: 100%;
-      margin-top: 1.5rem;
-      padding: 1.25rem;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      position: relative;
-    }
-    body[data-theme="light"] .bridge-network-vis {
-      background: rgba(0, 0, 0, 0.02);
-    }
-    .network-svg-container {
-      width: 100%;
-      height: 90px;
-    }
-    .flow-line {
-      stroke: rgba(255, 255, 255, 0.15);
-      stroke-width: 2;
-      stroke-dasharray: 6 6;
-      animation: flowDash 30s linear infinite;
-    }
-    .flow-line-active {
-      stroke: var(--brand);
-      stroke-width: 2.5;
-      stroke-dasharray: 8 6;
-      animation: flowDash 10s linear infinite;
-      filter: drop-shadow(0 0 6px var(--brand-glow));
-    }
-    @keyframes flowDash {
-      to { stroke-dashoffset: -1000; }
-    }
-    .pulse-particle {
-      fill: #F59E0B;
-      filter: drop-shadow(0 0 8px #F59E0B);
-    }
-
-    /* ==========================================================================
-       5. KITCHEN PRESSURE — HERO CIRCULAR COMMAND VISUAL
-       ========================================================================== */
-    .kitchen-pressure-command {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-      margin-top: 1.5rem;
-      padding: 1.5rem;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      box-shadow: var(--card-shadow);
-      position: relative;
-    }
-    .pressure-circle-visual {
-      position: relative;
-      width: 140px;
-      height: 140px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .pressure-svg {
-      width: 100%;
-      height: 100%;
-      transform: rotate(-90deg);
-    }
-    .pressure-ring-bg {
-      fill: none;
-      stroke: rgba(255, 255, 255, 0.06);
-      stroke-width: 6;
-    }
-    .pressure-ring-pulse {
-      fill: none;
-      stroke-width: 6;
-      stroke-linecap: round;
-      transition: stroke 0.5s ease, stroke-dashoffset 0.5s ease;
-    }
-    .pressure-center-data {
-      position: absolute;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-    }
-    .pressure-icon-emoji {
-      font-size: 1.5rem;
-      line-height: 1;
-    }
-    .pressure-state-title {
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-top: 0.2rem;
-    }
-    
-    /* Pressure state visuals */
-    .pressure-normal .pressure-ring-pulse {
-      stroke: var(--status-avail);
-      animation: ringSoftPulse 4s infinite ease-in-out;
-      filter: drop-shadow(0 0 10px var(--status-avail-glow));
-    }
-    .pressure-busy .pressure-ring-pulse {
-      stroke: var(--status-low);
-      animation: ringMedPulse 2s infinite ease-in-out;
-      filter: drop-shadow(0 0 12px var(--status-low-glow));
-    }
-    .pressure-very_busy .pressure-ring-pulse {
-      stroke: var(--status-delay);
-      animation: ringHighEnergy 1s infinite ease-in-out;
-      filter: drop-shadow(0 0 16px var(--status-delay-glow));
-    }
-    .pressure-stopped .pressure-ring-pulse {
-      stroke: var(--status-out);
-      animation: ringWarningStrobe 0.8s infinite alternate ease-in-out;
-      filter: drop-shadow(0 0 18px var(--status-out-glow));
-    }
-
-    @keyframes ringSoftPulse {
-      0%, 100% { transform: scale(1); opacity: 0.8; }
-      50% { transform: scale(1.03); opacity: 1; }
-    }
-    @keyframes ringMedPulse {
-      0%, 100% { transform: scale(1); opacity: 0.85; }
-      50% { transform: scale(1.06); opacity: 1; }
-    }
-    @keyframes ringHighEnergy {
-      0%, 100% { transform: scale(0.98); opacity: 0.9; }
-      50% { transform: scale(1.08); opacity: 1; }
-    }
-    @keyframes ringWarningStrobe {
-      from { opacity: 0.4; }
-      to { opacity: 1; }
-    }
-
-    .pressure-meta-info {
-      flex: 1;
-      min-width: 250px;
-    }
-    .pressure-heading-label {
-      font-size: 0.75rem;
-      color: var(--text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-    .pressure-dynamic-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-top: 0.2rem;
-    }
-    .pressure-dynamic-desc {
-      font-size: 0.85rem;
       color: var(--text-secondary);
-      margin-top: 0.25rem;
     }
-
     .workload-pills-group {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-top: 0.75rem;
+      gap: 0.35rem;
     }
     .workload-pill-btn {
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-subtle);
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.5rem 0.9rem;
-      border-radius: var(--radius-full);
-      border: 1px solid var(--border);
-      background: var(--bg-secondary);
-      color: var(--text-secondary);
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      gap: 0.3rem;
     }
-    .workload-pill-btn:hover {
-      background: var(--bg-elevated);
+    .workload-pill-btn.active.normal { background: var(--status-avail-bg); color: var(--status-avail); border-color: var(--status-avail-border); }
+    .workload-pill-btn.active.busy { background: var(--status-low-bg); color: var(--status-low); border-color: var(--status-low-border); }
+    .workload-pill-btn.active.very_busy { background: var(--status-delay-bg); color: var(--status-delay); border-color: var(--status-delay-border); }
+    .workload-pill-btn.active.stopped { background: var(--status-out-bg); color: var(--status-out); border-color: var(--status-out-border); }
+
+    .main-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1.25rem;
+    }
+    .view-panel { display: none; }
+    .view-panel.active { display: block; }
+
+    .kds-broadcast-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .kds-broadcast-input {
+      flex: 1;
+      height: 36px;
+      background: transparent;
+      border: none;
+      outline: none;
       color: var(--text-primary);
-      transform: translateY(-2px);
-    }
-    .workload-pill-btn.active.normal {
-      background: rgba(16, 185, 129, 0.15);
-      border-color: var(--status-avail);
-      color: var(--status-avail);
-      box-shadow: 0 0 15px var(--status-avail-glow);
-    }
-    .workload-pill-btn.active.busy {
-      background: rgba(245, 158, 11, 0.15);
-      border-color: var(--status-low);
-      color: var(--status-low);
-      box-shadow: 0 0 15px var(--status-low-glow);
-    }
-    .workload-pill-btn.active.very_busy {
-      background: rgba(249, 115, 22, 0.15);
-      border-color: var(--status-delay);
-      color: var(--status-delay);
-      box-shadow: 0 0 15px var(--status-delay-glow);
-    }
-    .workload-pill-btn.active.stopped {
-      background: rgba(239, 68, 68, 0.15);
-      border-color: var(--status-out);
-      color: var(--status-out);
-      box-shadow: 0 0 15px var(--status-out-glow);
+      font-size: 0.85rem;
     }
 
-    /* ==========================================================================
-       6. LIVE RESTAURANT STATUS — 4 ANIMATED MODULES
-       ========================================================================== */
-    .kpi-row-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-    .metric-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 1.25rem 1.5rem;
-      box-shadow: var(--card-shadow);
+    .filter-scroll-row {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .search-field-wrap {
       position: relative;
-      overflow: hidden;
-      transition: var(--transition-spring);
+      min-width: 220px;
     }
-    .metric-card:hover {
-      transform: translateY(-4px) translateZ(10px);
-      box-shadow: var(--card-shadow-hover);
-      border-color: rgba(255, 255, 255, 0.15);
+    .search-field {
+      width: 100%;
+      height: 38px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      padding: 0 2rem 0 0.85rem;
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      outline: none;
     }
-    .metric-title {
+    html[dir="ltr"] .search-field { padding: 0 0.85rem 0 2rem; }
+    .search-clear-btn {
+      position: absolute;
+      top: 50%;
+      right: 8px;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      display: none;
+    }
+    html[dir="ltr"] .search-clear-btn { right: auto; left: 8px; }
+    .search-icon-pos {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+      color: var(--text-tertiary);
+      pointer-events: none;
+    }
+    html[dir="ltr"] .search-icon-pos { left: auto; right: 10px; }
+
+    .cat-chip {
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-full);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
       font-size: 0.8rem;
       font-weight: 600;
       color: var(--text-secondary);
-      margin-bottom: 0.35rem;
+      white-space: nowrap;
+      cursor: pointer;
     }
-    .metric-val {
-      font-size: 2.5rem;
-      font-weight: 800;
-      font-family: var(--font-mono);
-      line-height: 1;
-      letter-spacing: -0.03em;
-      transition: transform 0.2s ease;
+    .cat-chip.active {
+      background: var(--brand);
+      color: #fff;
+      border-color: var(--brand);
     }
-    .metric-icon-box {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border-subtle);
-    }
-    .m-avail .metric-val { color: var(--status-avail); }
-    .m-avail .metric-icon-box { background: var(--status-avail-bg); color: var(--status-avail); border-color: rgba(16, 185, 129, 0.2); }
-    .m-low .metric-val { color: var(--status-low); }
-    .m-low .metric-icon-box { background: var(--status-low-bg); color: var(--status-low); border-color: rgba(245, 158, 11, 0.2); }
-    .m-delay .metric-val { color: var(--status-delay); }
-    .m-delay .metric-icon-box { background: var(--status-delay-bg); color: var(--status-delay); border-color: rgba(249, 115, 22, 0.2); }
-    .m-out .metric-val { color: var(--status-out); }
-    .m-out .metric-icon-box { background: var(--status-out-bg); color: var(--status-out); border-color: rgba(239, 68, 68, 0.2); }
 
-    /* ==========================================================================
-       7. LIVE MENU — 3D INTERACTIVE CARDS
-       ========================================================================== */
     .kitchen-cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.25rem;
-      margin-top: 1.25rem;
-      perspective: 1000px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 0.85rem;
     }
     .kds-card {
       background: var(--bg-surface);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 1.25rem;
-      box-shadow: var(--card-shadow);
+      padding: 1rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+      box-shadow: var(--shadow-sm);
     }
-    .kds-card:hover {
-      transform: translateY(-6px) translateZ(16px) rotateX(1.5deg);
-      box-shadow: var(--card-shadow-hover);
-      border-color: rgba(255, 255, 255, 0.16);
-    }
-    
-    /* 3D Status Visuals */
-    .kds-card.status-AVAILABLE {
-      border-top: 3px solid var(--status-avail);
-    }
-    .kds-card.status-AVAILABLE:hover {
-      box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.9), 0 0 25px -5px var(--status-avail-glow);
-    }
-    .kds-card.status-LOW_STOCK {
-      border-top: 3px solid var(--status-low);
-      background: linear-gradient(180deg, rgba(245, 158, 11, 0.04) 0%, var(--bg-surface) 60%);
-    }
-    .kds-card.status-LOW_STOCK:hover {
-      box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.9), 0 0 25px -5px var(--status-low-glow);
-    }
-    .kds-card.status-DELAYED {
-      border-top: 3px solid var(--status-delay);
-      background: linear-gradient(180deg, rgba(249, 115, 22, 0.05) 0%, var(--bg-surface) 60%);
-    }
-    .kds-card.status-DELAYED:hover {
-      box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.9), 0 0 30px -5px var(--status-delay-glow);
-    }
-    .kds-card.status-OUT_OF_STOCK {
-      border-top: 3px solid var(--status-out);
-      opacity: 0.75;
-      background: linear-gradient(180deg, rgba(239, 68, 68, 0.04) 0%, var(--bg-surface) 60%);
-    }
-    .kds-card.status-OUT_OF_STOCK:hover {
-      opacity: 0.95;
-      box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.9), 0 0 25px -5px var(--status-out-glow);
-    }
+    .kds-card.status-AVAILABLE { border-inline-start: 4px solid var(--status-avail); }
+    .kds-card.status-LOW_STOCK { border-inline-start: 4px solid var(--status-low); background: var(--status-low-bg); }
+    .kds-card.status-DELAYED { border-inline-start: 4px solid var(--status-delay); background: var(--status-delay-bg); }
+    .kds-card.status-OUT_OF_STOCK { border-inline-start: 4px solid var(--status-out); opacity: 0.85; background: var(--status-out-bg); }
 
     .kds-card-head {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 0.75rem;
-      margin-bottom: 0.75rem;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
     }
-    .kds-item-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      line-height: 1.3;
-    }
-    .kds-item-sub {
-      font-size: 0.8rem;
-      color: var(--text-tertiary);
-      margin-top: 0.15rem;
-    }
-    .kds-badges-row {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-      margin-top: 0.35rem;
-    }
-    .kds-meta-pill {
-      font-size: 0.7rem;
-      font-family: var(--font-mono);
-      padding: 0.15rem 0.5rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-full);
-      color: var(--text-secondary);
-    }
-
+    .kds-item-title { font-size: 1rem; font-weight: 700; line-height: 1.25; }
+    .kds-item-sub { font-size: 0.75rem; color: var(--text-tertiary); }
     .kds-status-pill {
       font-size: 0.72rem;
       font-weight: 700;
-      padding: 0.25rem 0.7rem;
+      padding: 0.2rem 0.5rem;
       border-radius: var(--radius-full);
       white-space: nowrap;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
     }
-    .pill-AVAILABLE { background: var(--status-avail-bg); color: var(--status-avail); border: 1px solid rgba(16, 185, 129, 0.3); }
-    .pill-LOW_STOCK { background: var(--status-low-bg); color: var(--status-low); border: 1px solid rgba(245, 158, 11, 0.3); }
-    .pill-DELAYED { background: var(--status-delay-bg); color: var(--status-delay); border: 1px solid rgba(249, 115, 22, 0.3); }
-    .pill-OUT_OF_STOCK { background: var(--status-out-bg); color: var(--status-out); border: 1px solid rgba(239, 68, 68, 0.3); }
+    .pill-AVAILABLE { background: var(--status-avail-bg); color: var(--status-avail); border: 1px solid var(--status-avail-border); }
+    .pill-LOW_STOCK { background: var(--status-low-bg); color: var(--status-low); border: 1px solid var(--status-low-border); }
+    .pill-DELAYED { background: var(--status-delay-bg); color: var(--status-delay); border: 1px solid var(--status-delay-border); }
+    .pill-OUT_OF_STOCK { background: var(--status-out-bg); color: var(--status-out); border: 1px solid var(--status-out-border); }
 
-    /* Radial Delay Timer */
-    .delay-radial-box {
+    .delay-meter-box {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      padding: 0.65rem 0.85rem;
-      background: rgba(249, 115, 22, 0.08);
-      border: 1px solid rgba(249, 115, 22, 0.2);
+      justify-content: space-between;
+      background: var(--bg-surface);
+      border: 1px solid var(--status-delay-border);
       border-radius: var(--radius-sm);
-      margin-top: 0.65rem;
+      padding: 0.4rem 0.6rem;
     }
-    .radial-svg-wrap {
-      width: 44px;
-      height: 44px;
-      position: relative;
-      flex-shrink: 0;
-    }
-    .radial-svg-wrap svg {
-      width: 100%;
-      height: 100%;
-      transform: rotate(-90deg);
-    }
-    .radial-bg {
-      fill: none;
-      stroke: rgba(249, 115, 22, 0.2);
-      stroke-width: 4;
-    }
-    .radial-progress {
-      fill: none;
-      stroke: var(--status-delay);
-      stroke-width: 4;
-      stroke-linecap: round;
-      stroke-dasharray: 100;
-      stroke-dashoffset: 0;
-      transition: stroke-dashoffset 0.5s ease;
-    }
-    .radial-digits {
-      font-size: 1.15rem;
+    .delay-digits {
       font-family: var(--font-mono);
-      font-weight: 800;
-      color: var(--status-delay);
-      line-height: 1.1;
-    }
-    .radial-digits.overdue {
-      color: var(--status-out);
-      animation: strobeText 1s infinite alternate;
-    }
-    .radial-sub {
-      font-size: 0.68rem;
-      color: var(--text-tertiary);
-    }
-    .delay-bump-row {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      margin-inline-start: auto;
-    }
-    .btn-bump {
-      padding: 0.35rem 0.6rem;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      color: var(--text-primary);
-      font-size: 0.75rem;
+      font-size: 1.1rem;
       font-weight: 700;
-      font-family: var(--font-mono);
-      cursor: pointer;
-      transition: all 0.2s;
+      color: var(--status-delay);
     }
-    .btn-bump:hover {
-      background: var(--brand);
-      color: #FFFFFF;
-      transform: scale(1.05);
+    .delay-bump-row { display: flex; gap: 0.25rem; }
+    .btn-bump {
+      padding: 0.2rem 0.45rem;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      font-size: 0.7rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text-primary);
     }
 
-    /* Fast Touch Action Buttons (48px targets) */
     .kds-actions-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 0.4rem;
-      margin-top: 1rem;
+      gap: 0.35rem;
+      margin-top: 0.75rem;
     }
     .btn-kds-act {
-      height: 44px;
+      height: 38px;
       border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
       font-size: 0.75rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.25rem;
-      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-      background: var(--bg-secondary);
-      color: var(--text-secondary);
     }
-    .btn-kds-act:hover {
-      transform: translateY(-2px);
-    }
-    .btn-kds-act:active {
-      transform: scale(0.96);
-    }
-    .act-avail:hover { background: var(--status-avail); color: #FFFFFF; border-color: var(--status-avail); }
-    .act-low:hover { background: var(--status-low); color: #000000; border-color: var(--status-low); }
-    .act-delay:hover { background: var(--status-delay); color: #FFFFFF; border-color: var(--status-delay); }
-    .act-out:hover { background: var(--status-out); color: #FFFFFF; border-color: var(--status-out); }
-    .act-full {
-      grid-column: span 4;
-      background: var(--status-avail-bg);
-      color: var(--status-avail);
-      border-color: rgba(16, 185, 129, 0.3);
-    }
-    .act-full:hover {
-      background: var(--status-avail);
-      color: #FFFFFF;
-    }
+    .act-avail { background: var(--status-avail-bg); color: var(--status-avail); border-color: var(--status-avail-border); }
+    .act-low { background: var(--status-low-bg); color: var(--status-low); border-color: var(--status-low-border); }
+    .act-delay { background: var(--status-delay-bg); color: var(--status-delay); border-color: var(--status-delay-border); }
+    .act-out { background: var(--status-out-bg); color: var(--status-out); border-color: var(--status-out-border); }
+    .act-full { grid-column: span 4; }
 
-    /* ==========================================================================
-       8. QUICK KITCHEN REQUESTS & CUSTOM COMPOSER
-       ========================================================================== */
+    .cashier-load-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.25rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .banner-load-left { display: flex; align-items: center; gap: 0.75rem; }
+    .banner-load-title { font-size: 0.95rem; font-weight: 700; }
+    .banner-load-sub { font-size: 0.78rem; color: var(--text-secondary); }
+    .banner-load-timestamp { font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-tertiary); }
+
+    .kpi-row-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 1.25rem;
+    }
+    .metric-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+    }
+    .metric-title { font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.25rem; }
+    .metric-val { font-size: 2rem; font-weight: 800; font-family: var(--font-mono); line-height: 1; }
+    .m-avail .metric-val { color: var(--status-avail); }
+    .m-low .metric-val { color: var(--status-low); }
+    .m-delay .metric-val { color: var(--status-delay); }
+    .m-out .metric-val { color: var(--status-out); }
+
     .quick-prompts-row {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
       flex-wrap: wrap;
-      margin: 1rem 0;
+      margin: 0.75rem 0;
     }
     .prompt-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.55rem 1rem;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
+      padding: 0.4rem 0.8rem;
       border-radius: var(--radius-full);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
       color: var(--text-primary);
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    body[data-theme="light"] .prompt-chip {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-    .prompt-chip:hover {
-      transform: translateY(-2px) scale(1.02);
-      border-color: var(--brand);
-      box-shadow: 0 8px 20px -4px var(--brand-glow);
-    }
-    .prompt-chip:active {
-      transform: scale(0.96);
     }
 
     .chat-composer-box {
       background: var(--bg-surface);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
       padding: 0.75rem;
-      box-shadow: var(--card-shadow);
-      transition: all 0.3s ease;
+      margin-top: 0.75rem;
     }
-    .chat-composer-box:focus-within {
-      border-color: var(--brand);
-      box-shadow: 0 0 25px var(--brand-glow);
-    }
-    .chat-input-row {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+    .chat-input-row { display: flex; align-items: center; gap: 0.5rem; }
     .chat-text-input {
       flex: 1;
-      height: 44px;
-      background: transparent;
-      border: none;
+      height: 38px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0 0.75rem;
       color: var(--text-primary);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       outline: none;
-      padding: 0 0.5rem;
     }
+
     .btn-brand-solid {
-      height: 44px;
-      padding: 0 1.25rem;
-      background: var(--brand-gradient);
-      color: #FFFFFF;
+      height: 38px;
+      padding: 0 1rem;
+      background: var(--brand);
+      color: #fff;
       font-size: 0.85rem;
       font-weight: 700;
       border: none;
@@ -1188,153 +622,22 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.45rem;
-      box-shadow: 0 4px 15px var(--brand-glow);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .btn-brand-solid:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px var(--brand-glow);
-    }
-    .btn-brand-solid:active {
-      transform: scale(0.96);
+      gap: 0.4rem;
     }
 
-    /* ==========================================================================
-       9. AUDIT LOG TIMELINE
-       ========================================================================== */
-    .timeline-wrap {
-      margin-top: 1rem;
-      position: relative;
-    }
-    .timeline-wrap::before {
-      content: '';
-      position: absolute;
-      top: 10px;
-      bottom: 10px;
-      right: 19px;
-      width: 2px;
-      background: var(--border);
-    }
-    html[dir="ltr"] .timeline-wrap::before {
-      right: auto;
-      left: 19px;
-    }
-    .timeline-item {
-      position: relative;
-      display: flex;
-      align-items: flex-start;
-      gap: 1.25rem;
-      padding-bottom: 1.25rem;
-      animation: timelineSlideIn 0.35s ease-out;
-    }
-    @keyframes timelineSlideIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .timeline-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--brand);
-      border: 3px solid var(--bg-base);
-      box-shadow: 0 0 10px var(--brand);
-      margin-top: 4px;
-      flex-shrink: 0;
-      position: relative;
-      z-index: 2;
-    }
-    .timeline-content-card {
-      flex: 1;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 0.75rem 1rem;
-    }
-    .timeline-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.5rem;
-      font-size: 0.75rem;
-      color: var(--text-tertiary);
-      margin-bottom: 0.25rem;
-    }
-
-    /* ==========================================================================
-       10. EMERGENCY & AUDIT MODALS
-       ========================================================================== */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      animation: modalFadeIn 0.25s ease-out;
-    }
-    @keyframes modalFadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    .modal-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-      max-width: 500px;
-      width: 100%;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.95);
-      animation: modalScaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    @keyframes modalScaleUp {
-      from { transform: scale(0.95); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .critical-modal-card {
-      background: radial-gradient(circle at 50% 0%, rgba(239, 68, 68, 0.2) 0%, #0B0B0B 75%);
-      border: 2px solid var(--status-out);
-      box-shadow: 0 0 60px rgba(239, 68, 68, 0.4);
-    }
-    .emergency-shield-icon {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto 1rem;
-      color: var(--status-out);
-      animation: emergencyPulse 1.2s infinite alternate ease-in-out;
-    }
-    @keyframes emergencyPulse {
-      from { transform: scale(0.95); filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.5)); }
-      to { transform: scale(1.08); filter: drop-shadow(0 0 25px rgba(239, 68, 68, 0.9)); }
-    }
-
-    /* ==========================================================================
-       11. MOBILE BOTTOM NAVIGATION
-       ========================================================================== */
     .mobile-bottom-nav {
       display: none;
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
-      background: rgba(11, 11, 11, 0.95);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-top: 1px solid var(--border);
-      padding: 0.5rem 1rem max(0.5rem, env(safe-area-inset-bottom));
-      z-index: 900;
+      height: var(--nav-height-mobile);
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-subtle);
+      z-index: 100;
+      padding: 0 1rem var(--safe-bottom);
       justify-content: space-around;
-    }
-    body[data-theme="light"] .mobile-bottom-nav {
-      background: rgba(255, 255, 255, 0.95);
+      align-items: center;
     }
     .m-nav-btn {
       display: flex;
@@ -1347,215 +650,108 @@
       font-size: 0.72rem;
       font-weight: 600;
       cursor: pointer;
-      min-width: 60px;
-      min-height: 48px;
-      justify-content: center;
+      min-width: 50px;
     }
-    .m-nav-btn.active {
-      color: var(--brand);
-    }
-    .m-nav-btn svg {
-      width: 20px;
-      height: 20px;
-    }
+    .m-nav-btn.active { color: var(--brand); }
 
-    @media (max-width: 768px) {
-      .desktop-nav-tabs { display: none; }
-      .mobile-bottom-nav { display: flex; }
-      .command-center-hero { padding: 1.25rem 1rem; }
-      .kitchen-pressure-command { flex-direction: column; text-align: center; }
-      .floating-nav-wrapper { top: 0.5rem; }
-      body { padding-bottom: 70px; }
-    }
-
-    /* Common Utility Icons */
-    .icon {
-      width: 20px;
-      height: 20px;
-      stroke-width: 2;
-      stroke: currentColor;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-    .icon-sm { width: 16px; height: 16px; }
-    .icon-lg { width: 28px; height: 28px; }
-
-    /* Filter & Search Rows */
-    .filter-scroll-row {
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      overflow-x: auto;
-      padding-bottom: 0.5rem;
-      margin: 1rem 0;
+      justify-content: center;
+      padding: 1rem;
     }
-    .search-field-wrap {
-      position: relative;
-      min-width: 240px;
-    }
-    .search-field {
+    .modal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      max-width: 480px;
       width: 100%;
-      height: 42px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-full);
-      padding: 0 2.5rem 0 1rem;
-      color: var(--text-primary);
-      font-size: 0.85rem;
-      outline: none;
-      transition: all 0.2s;
-    }
-    html[dir="ltr"] .search-field {
-      padding: 0 1rem 0 2.5rem;
-    }
-    .search-field:focus {
-      border-color: var(--brand);
-      box-shadow: 0 0 15px var(--brand-glow);
-    }
-    .search-clear-btn {
-      position: absolute;
-      top: 50%;
-      right: 10px;
-      transform: translateY(-50%);
-      background: transparent;
-      border: none;
-      color: var(--text-tertiary);
-      cursor: pointer;
-      display: none;
-    }
-    html[dir="ltr"] .search-clear-btn {
-      right: auto;
-      left: 10px;
-    }
-    .search-icon-pos {
-      position: absolute;
-      top: 50%;
-      left: 12px;
-      transform: translateY(-50%);
-      color: var(--text-tertiary);
-      pointer-events: none;
-    }
-    html[dir="ltr"] .search-icon-pos {
-      left: auto;
-      right: 12px;
+      box-shadow: var(--shadow-lg);
     }
 
-    .category-chip {
-      padding: 0.5rem 1rem;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-full);
-      color: var(--text-secondary);
-      font-size: 0.82rem;
-      font-weight: 600;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .category-chip:hover {
-      background: var(--bg-elevated);
-      color: var(--text-primary);
-    }
-    .category-chip.active {
-      background: var(--brand-gradient);
-      color: #FFFFFF;
-      border-color: transparent;
-      box-shadow: 0 4px 12px var(--brand-glow);
-    }
-
-    .view-panel {
-      display: none;
-      animation: viewFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .view-panel.active {
-      display: block;
-    }
-    @keyframes viewFadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Auth View */
     .auth-stage {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 1.5rem;
-      background: radial-gradient(circle at 50% 30%, #171717 0%, #050505 80%);
     }
     .auth-card {
       background: var(--bg-surface);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
-      padding: 2.5rem;
-      max-width: 440px;
+      padding: 2rem;
+      max-width: 400px;
       width: 100%;
-      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.95);
+      box-shadow: var(--shadow-md);
       text-align: center;
     }
     .form-control-input {
       width: 100%;
-      height: 46px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
+      height: 42px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
-      padding: 0 1rem;
+      padding: 0 0.85rem;
       color: var(--text-primary);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       outline: none;
       margin-top: 0.35rem;
-      transition: all 0.2s;
     }
-    .form-control-input:focus {
-      border-color: var(--brand);
-      box-shadow: 0 0 15px var(--brand-glow);
+
+    @media (max-width: 768px) {
+      .desktop-nav-tabs { display: none; }
+      .mobile-bottom-nav { display: flex; }
+      body { padding-bottom: calc(var(--nav-height-mobile) + var(--safe-bottom)); }
     }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2;
+      stroke: currentColor;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .icon-sm { width: 15px; height: 15px; }
   </style>
 </head>
-<body data-theme="dark">
-
-  <!-- Desktop Custom Magnetic Cursor -->
-  <div id="customCursorDot" class="custom-cursor-dot"></div>
-  <div id="customCursorRing" class="custom-cursor-ring"></div>
-
-  <!-- Cinematic Application Intro Overlay -->
-  <div id="cinematicIntro" class="cinematic-intro">
-    <div class="intro-char-khamer">خ</div>
-    <div class="intro-title-arabic">مطعم خامر</div>
-    <div class="intro-title-bridge">KITCHEN BRIDGE</div>
-    <div class="intro-subtitle-live">
-      <span class="dot-pulse"></span>
-      <span>LIVE RESTAURANT OPERATIONS</span>
-    </div>
-    <button class="intro-skip-btn" onclick="skipCinematicIntro()">تخطي • Skip</button>
-  </div>
+<body data-theme="light">
 
   <!-- 1. AUTH / LOGIN STAGE -->
   <div id="authStage" class="auth-stage">
     <div class="auth-card">
       <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
-        <div class="brand-mark" style="width: 56px; height: 56px; font-size: 2rem;">خ</div>
+        <div class="brand-mark" style="width: 48px; height: 48px; font-size: 1.6rem;">خ</div>
       </div>
-      <h1 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.25rem;">مطعم خامر</h1>
-      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Khamer Kitchen Command Center</p>
+      <h1 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 0.25rem;">مطعم خامر</h1>
+      <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 1.25rem;">Khamer Kitchen Bridge</p>
 
       <form id="authForm" onsubmit="handleAuthSubmit(event)">
-        <div style="text-align: start; margin-bottom: 1rem;">
-          <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);" data-i18n="emailLabel">البريد الإلكتروني</label>
+        <div style="text-align: start; margin-bottom: 0.85rem;">
+          <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);" data-i18n="emailLabel">البريد الإلكتروني</label>
           <input type="email" id="authEmail" class="form-control-input" placeholder="staff@khamer.com" required />
         </div>
-        <div style="text-align: start; margin-bottom: 1.5rem;">
-          <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);" data-i18n="passwordLabel">كلمة المرور</label>
+        <div style="text-align: start; margin-bottom: 1.25rem;">
+          <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);" data-i18n="passwordLabel">كلمة المرور</label>
           <input type="password" id="authPassword" class="form-control-input" placeholder="••••••••" required />
         </div>
         <button type="submit" class="btn-brand-solid" style="width: 100%; justify-content: center;" data-i18n="loginBtn">تسجيل الدخول</button>
       </form>
 
-      <div style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
-        <div style="font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: 0.75rem;" data-i18n="quickSelectStation">الدخول السريع المباشر للمحطة:</div>
-        <div style="display: flex; gap: 0.5rem; justify-content: center;">
+      <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
+        <div style="font-size: 0.72rem; color: var(--text-tertiary); margin-bottom: 0.5rem;" data-i18n="quickSelectStation">الدخول السريع المباشر للمحطة:</div>
+        <div style="display: flex; gap: 0.4rem; justify-content: center;">
           <button class="prompt-chip" onclick="directEnterStation('kitchen')">👨‍🍳 <span data-i18n="kitchenNav">المطبخ</span></button>
           <button class="prompt-chip" onclick="directEnterStation('cashier')">💵 <span data-i18n="cashierNav">الكاشير</span></button>
           <button class="prompt-chip" onclick="directEnterStation('admin')">👑 <span data-i18n="adminNav">الإدارة</span></button>
@@ -1567,355 +763,205 @@
   <!-- 2. MAIN APPLICATION SHELL -->
   <div id="appShell" style="display: none;">
     
-    <!-- FLOATING TOP NAVIGATION -->
-    <div class="floating-nav-wrapper">
-      <header class="app-header">
-        <div class="brand-group">
-          <div class="brand-mark">خ</div>
-          <div class="brand-meta">
-            <div class="brand-title" data-i18n="appName">مطعم خامر</div>
-            <div class="brand-subtitle" data-i18n="appSubtitle">Kitchen Bridge</div>
-          </div>
+    <!-- TOP HEADER -->
+    <header class="app-header">
+      <div class="brand-group">
+        <div class="brand-mark">خ</div>
+        <div class="brand-meta">
+          <div class="brand-title" data-i18n="appName">مطعم خامر</div>
+          <div class="brand-subtitle" data-i18n="appSubtitle">Kitchen Bridge</div>
+        </div>
+      </div>
+
+      <!-- Desktop Nav Tabs -->
+      <div class="desktop-nav-tabs">
+        <button id="dNavKitchen" class="d-nav-btn active" onclick="switchActiveView('kitchen')">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"></path><line x1="6" y1="17" x2="18" y2="17"></line></svg>
+          <span data-i18n="kitchenNav">المطبخ</span>
+        </button>
+        <button id="dNavCashier" class="d-nav-btn" onclick="switchActiveView('cashier')">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+          <span data-i18n="cashierNav">الكاشير</span>
+        </button>
+        <button id="dNavAdmin" class="d-nav-btn" onclick="switchActiveView('admin')">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+          <span data-i18n="adminNav">الإدارة</span>
+        </button>
+      </div>
+
+      <!-- Header Controls -->
+      <div class="header-controls">
+        <div id="connPill" class="conn-pill">
+          <span class="dot-pulse"></span>
+          <span id="connPillText">LIVE</span>
         </div>
 
-        <!-- Desktop Segmented Tabs -->
-        <div class="desktop-nav-tabs">
-          <button id="dNavKitchen" class="d-nav-btn active" onclick="switchActiveView('kitchen')">
-            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"></path><line x1="6" y1="17" x2="18" y2="17"></line></svg>
-            <span data-i18n="kitchenNav">المطبخ</span>
-          </button>
-          <button id="dNavCashier" class="d-nav-btn" onclick="switchActiveView('cashier')">
-            <svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
-            <span data-i18n="cashierNav">الكاشير</span>
-          </button>
-          <button id="dNavAdmin" class="d-nav-btn" onclick="switchActiveView('admin')">
-            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-            <span data-i18n="adminNav">الإدارة</span>
-          </button>
-        </div>
+        <button id="btnFullscreenToggle" class="btn-header-icon" onclick="toggleFullScreenMode()" data-i18n-title="kioskTitle" title="الشاشة الكاملة / Kiosk Mode">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+        </button>
+        <button class="btn-header-icon" onclick="openNotificationDrawer()" title="Notifications">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <span id="notifBadge" class="badge-dot" style="display: none;">0</span>
+        </button>
 
-        <!-- Header Action Controls -->
-        <div class="header-controls">
-          <div id="connPill" class="conn-pill">
-            <span class="dot-pulse"></span>
-            <span id="connPillText">LIVE</span>
-          </div>
+        <button class="user-profile-trigger" onclick="openProfileSheet()" title="Switch Station / Logout">
+          <div class="user-avatar-circle" id="userAvatarText">K</div>
+          <span class="user-station-tag station-kitchen" id="userStationLabel">Kitchen</span>
+        </button>
+      </div>
+    </header>
 
-          <!-- Sound Equalizer Toggle -->
-          <button class="btn-header-icon" id="btnAudioToggle" onclick="toggleAudioChimes()" title="الصوت الفوري / Audio Alerts">
-            <div id="soundEqBars" class="sound-eq-box">
-              <div class="eq-bar eq-bar-1"></div>
-              <div class="eq-bar eq-bar-2"></div>
-              <div class="eq-bar eq-bar-3"></div>
-            </div>
+    <!-- KITCHEN WORKLOAD STRIP -->
+    <div class="workload-strip">
+      <div style="display: flex; align-items: center; gap: 0.5rem; overflow-x: auto;">
+        <span id="sessionBadge" class="kds-status-pill pill-DELAYED" style="font-size: 0.72rem; cursor: pointer;" onclick="filterByActiveSession()" data-i18n-title="sessionTitle" title="تصفية حسب الفترة الحالية">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span id="sessionBadgeText">الوجبات الرئيسية</span>
+        </span>
+        <span class="workload-label" data-i18n="kitchenLoadLabel">ضغط المطبخ:</span>
+        <div class="workload-pills-group">
+          <button id="wChipNormal" class="workload-pill-btn active normal" onclick="setKitchenLoadStatus('normal')">
+            <span>🟢</span> <span data-i18n="loadNormal">طبيعي</span>
           </button>
-
-          <!-- Language Toggle -->
-          <button class="btn-header-icon" onclick="toggleAppLanguage()" title="تغيير اللغة / Toggle Language">
-            <span style="font-size: 0.75rem; font-weight: 800; font-family: var(--font-en);" id="langHeaderLabel">EN</span>
+          <button id="wChipBusy" class="workload-pill-btn busy" onclick="setKitchenLoadStatus('busy')">
+            <span>🟡</span> <span data-i18n="loadBusy">مشغول</span>
           </button>
-
-          <!-- Theme Toggle -->
-          <button class="btn-header-icon" onclick="toggleAppTheme()" title="المظهر / Theme">
-            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          <button id="wChipVeryBusy" class="workload-pill-btn very_busy" onclick="setKitchenLoadStatus('very_busy')">
+            <span>🟠</span> <span data-i18n="loadVeryBusy">ضغط عالي</span>
           </button>
-
-          <!-- Fullscreen / Kiosk Toggle -->
-          <button id="btnFullscreenToggle" class="btn-header-icon" onclick="toggleFullScreenMode()" data-i18n-title="kioskTitle" title="الشاشة الكاملة / Kiosk Mode">
-            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
-          </button>
-
-          <!-- Notifications Trigger -->
-          <button class="btn-header-icon" onclick="openNotificationDrawer()" title="Notifications">
-            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-            <span id="notifBadge" class="badge-dot" style="display: none;">0</span>
-          </button>
-
-          <!-- Profile / Station Trigger -->
-          <button class="user-profile-trigger" onclick="openProfileSheet()" title="Switch Station / Logout">
-            <div class="user-avatar-circle" id="userAvatarText">K</div>
-            <span class="user-station-tag station-kitchen" id="userStationLabel">Kitchen</span>
-          </button>
-        </div>
-      </header>
-    </div>
-
-    <!-- COMMAND CENTER HERO & FLOW VISUALIZATION -->
-    <div class="command-center-hero" id="commandCenterHero">
-      <div class="hero-header-row">
-        <div class="hero-title-wrap">
-          <div class="hero-badge-live">
-            <span class="dot-pulse"></span>
-            <span>KHAMER COMMAND CENTER • LIVE OPERATIONS</span>
-          </div>
-          <h1 class="hero-heading">Khamer Kitchen Bridge</h1>
-          <div class="hero-arabic-sub">الجسر المباشر بين المطبخ والكاشير والإدارة</div>
-          <div class="hero-tagline">مطبخ واحد. جسر واحد. تحكم لحظي. • One Kitchen. One Bridge. Real-Time Control.</div>
-        </div>
-
-        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-          <span id="sessionBadge" class="kds-status-pill pill-DELAYED" style="font-size: 0.8rem; cursor: pointer; padding: 0.4rem 0.9rem;" onclick="filterByActiveSession()" data-i18n-title="sessionTitle" title="تصفية حسب الفترة الحالية">
-            <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            <span id="sessionBadgeText">الوجبات الرئيسية</span>
-          </span>
-          <button class="prompt-chip" style="background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.3); color: #EF4444;" onclick="confirmEmergencyAlert()">
-            🚨 <span data-i18n="emergencyAlertBtn">نداء طوارئ</span>
+          <button id="wChipStopped" class="workload-pill-btn stopped" onclick="setKitchenLoadStatus('stopped')">
+            <span>🔴</span> <span data-i18n="loadStopped">متوقف مؤقتاً</span>
           </button>
         </div>
       </div>
 
-      <!-- Real-Time Communication Network Diagram -->
-      <div class="bridge-network-vis">
-        <svg class="network-svg-container" viewBox="0 0 900 90" preserveAspectRatio="xMidYMid meet">
-          <!-- Connecting Lines -->
-          <line class="flow-line flow-line-active" x1="120" y1="45" x2="450" y2="45"></line>
-          <line class="flow-line flow-line-active" x1="450" y1="45" x2="780" y2="45"></line>
-          <line class="flow-line" x1="450" y1="15" x2="450" y2="45"></line>
-
-          <!-- Nodes -->
-          <!-- Kitchen Node -->
-          <g transform="translate(120, 45)">
-            <circle r="22" fill="#171717" stroke="var(--brand)" stroke-width="2"></circle>
-            <text text-anchor="middle" dy="4" fill="#FFFFFF" font-size="11" font-weight="700">👨‍🍳 KITCHEN</text>
-          </g>
-
-          <!-- Central Bridge Node -->
-          <g id="bridgeHubNode" transform="translate(450, 45)">
-            <circle id="bridgeHubPulse" r="30" fill="#171717" stroke="#F59E0B" stroke-width="2.5"></circle>
-            <text text-anchor="middle" dy="-3" fill="#F59E0B" font-size="11" font-weight="800">⚡ BRIDGE</text>
-            <text text-anchor="middle" dy="11" fill="rgba(255,255,255,0.6)" font-size="8">SYNC 100%</text>
-          </g>
-
-          <!-- Cashier Node -->
-          <g transform="translate(780, 45)">
-            <circle r="22" fill="#171717" stroke="#10B981" stroke-width="2"></circle>
-            <text text-anchor="middle" dy="4" fill="#FFFFFF" font-size="11" font-weight="700">💵 CASHIER</text>
-          </g>
-
-          <!-- Admin Node -->
-          <g transform="translate(450, 15)">
-            <rect x="-35" y="-12" width="70" height="24" rx="12" fill="#171717" stroke="#A78BFA" stroke-width="1.5"></rect>
-            <text text-anchor="middle" dy="4" fill="#A78BFA" font-size="9" font-weight="700">👑 ADMIN</text>
-          </g>
-
-          <!-- Animated Photon Particles -->
-          <circle class="pulse-particle" r="4">
-            <animateMotion path="M 120,45 L 450,45" dur="3s" repeatCount="indefinite"></animateMotion>
-          </circle>
-          <circle class="pulse-particle" r="4" fill="#10B981">
-            <animateMotion path="M 450,45 L 780,45" dur="3s" repeatCount="indefinite"></animateMotion>
-          </circle>
-          <circle class="pulse-particle" r="3" fill="#A78BFA">
-            <animateMotion path="M 450,15 L 450,45" dur="4s" repeatCount="indefinite"></animateMotion>
-          </circle>
-        </svg>
-      </div>
-
-      <!-- KITCHEN PRESSURE — HERO CIRCULAR COMMAND VISUAL -->
-      <div class="kitchen-pressure-command pressure-normal" id="kitchenPressureCommand">
-        <div class="pressure-circle-visual">
-          <svg class="pressure-svg" viewBox="0 0 100 100">
-            <circle class="pressure-ring-bg" cx="50" cy="50" r="42"></circle>
-            <circle id="pressureRingProgress" class="pressure-ring-pulse" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="66"></circle>
-          </svg>
-          <div class="pressure-center-data">
-            <span class="pressure-icon-emoji" id="pressureEmoji">🟢</span>
-            <span class="pressure-state-title" id="pressureStateText">طبيعي</span>
-          </div>
-        </div>
-
-        <div class="pressure-meta-info">
-          <div class="pressure-heading-label" data-i18n="kitchenLoadLabel">حالة ضغط المطبخ:</div>
-          <div class="pressure-dynamic-title" id="pressureDynamicTitle">🟢 حالة المطبخ: عادي</div>
-          <div class="pressure-dynamic-desc" id="pressureDynamicDesc">تجهيز الطلبات بالسرعة القياسية الطبيعية</div>
-          
-          <!-- Interactive Selector Chips -->
-          <div class="workload-pills-group">
-            <button id="wChipNormal" class="workload-pill-btn active normal" onclick="setKitchenLoadStatus('normal')">
-              <span>🟢</span> <span data-i18n="loadNormal">طبيعي</span>
-            </button>
-            <button id="wChipBusy" class="workload-pill-btn busy" onclick="setKitchenLoadStatus('busy')">
-              <span>🟡</span> <span data-i18n="loadBusy">مشغول</span>
-            </button>
-            <button id="wChipVeryBusy" class="workload-pill-btn very_busy" onclick="setKitchenLoadStatus('very_busy')">
-              <span>🟠</span> <span data-i18n="loadVeryBusy">ضغط عالي</span>
-            </button>
-            <button id="wChipStopped" class="workload-pill-btn stopped" onclick="setKitchenLoadStatus('stopped')">
-              <span>🔴</span> <span data-i18n="loadStopped">متوقف مؤقتاً</span>
-            </button>
-          </div>
-        </div>
+      <div>
+        <button class="prompt-chip" style="background: var(--status-out-bg); color: var(--status-out); border-color: var(--status-out-border);" onclick="confirmEmergencyAlert()">
+          🚨 <span data-i18n="emergencyAlertBtn">نداء طوارئ</span>
+        </button>
       </div>
     </div>
 
-    <!-- MAIN VIEWS CONTAINER -->
-    <main style="max-width: 1400px; margin: 0 auto; padding: 0 1rem 3rem;">
+    <!-- MAIN VIEWS -->
+    <main class="main-content">
       
-      <!-- ====================================================================
-           VIEW 1: KITCHEN STATION VIEW
-           ==================================================================== -->
+      <!-- VIEW 1: KITCHEN STATION -->
       <div id="kitchenStationView" class="view-panel active">
-        
-        <!-- Broadcast Bar -->
-        <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.5rem 0.75rem; margin-bottom: 1.25rem; box-shadow: var(--card-shadow);">
+        <div class="kds-broadcast-bar">
           <svg class="icon icon-sm" style="color: var(--brand);" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-          <input type="text" id="kitchenBroadcastInput" class="chat-text-input" style="height: 38px;" data-i18n-placeholder="phBroadcast" placeholder="تعميم فوري للكاشيرات (مثال: العصير يستغرق 15 دقيقة)" />
-          <button class="btn-brand-solid" style="height: 38px; padding: 0 1rem;" onclick="submitBroadcastAnnouncement()" data-i18n="sendBroadcast">تعميم</button>
+          <input type="text" id="kitchenBroadcastInput" class="kds-broadcast-input" data-i18n-placeholder="phBroadcast" placeholder="تعميم فوري للكاشيرات (مثال: العصير يستغرق 15 دقيقة)" />
+          <button class="btn-brand-solid" onclick="submitBroadcastAnnouncement()" data-i18n="sendBroadcast">تعميم</button>
         </div>
 
-        <!-- Search & Category Filters -->
         <div class="filter-scroll-row">
           <div class="search-field-wrap">
             <input type="text" id="kitchenSearchInput" class="search-field" data-i18n-placeholder="phSearchItem" placeholder="بحث سريع عن صنف..." oninput="onKitchenSearchChange()" />
             <button id="kitchenSearchClear" class="search-clear-btn" onclick="clearKitchenSearch()">✕</button>
             <svg class="icon icon-sm search-icon-pos" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           </div>
-          <div id="kitchenCategoryChips" style="display: flex; gap: 0.5rem; overflow-x: auto;">
-            <!-- Category Chips Rendered by JS -->
-          </div>
+          <div id="kitchenCategoryChips" style="display: flex; gap: 0.4rem; overflow-x: auto;"></div>
         </div>
 
-        <!-- 3D KDS CARDS GRID -->
-        <div id="kitchenCardsGrid" class="kitchen-cards-grid">
-          <!-- 3D Menu Cards Rendered by JS -->
-        </div>
+        <div id="kitchenCardsGrid" class="kitchen-cards-grid"></div>
 
-        <!-- Live Kitchen Messages Feed -->
-        <div style="margin-top: 2rem; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--card-shadow);">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-            <h3 style="font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
-              <span>💬</span> <span data-i18n="cashierInquiries">استفسارات ورسائل الكاشير</span>
-            </h3>
+        <div style="margin-top: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+            <h3 style="font-size: 0.88rem; font-weight: 700;">💬 <span data-i18n="cashierInquiries">استفسارات ورسائل الكاشير</span></h3>
             <span id="kdsMsgCountBadge" class="kds-status-pill pill-AVAILABLE" style="font-size: 0.7rem;">0 رسائل</span>
           </div>
-          <div id="kitchenMsgFeed" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 250px; overflow-y: auto;">
-            <!-- Messages Rendered by JS -->
-          </div>
+          <div id="kitchenMsgFeed" style="display: flex; flex-direction: column; gap: 0.4rem; max-height: 200px; overflow-y: auto;"></div>
         </div>
       </div>
 
-      <!-- ====================================================================
-           VIEW 2: CASHIER STATION VIEW
-           ==================================================================== -->
+      <!-- VIEW 2: CASHIER STATION -->
       <div id="cashierStationView" class="view-panel">
-        
-        <!-- Live Kitchen Load Banner for Cashier -->
-        <div id="cashierKitchenLoadBanner" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; background: var(--bg-surface); border: 1px solid var(--border); border-left: 4px solid var(--status-avail); border-radius: var(--radius-md); margin-bottom: 1.25rem; box-shadow: var(--card-shadow);">
-          <div style="display: flex; align-items: center; gap: 0.75rem;">
-            <span class="dot-pulse"></span>
+        <div id="cashierKitchenLoadBanner" class="cashier-load-banner">
+          <div class="banner-load-left">
+            <span class="dot-pulse" style="color: var(--status-avail);"></span>
             <div>
-              <div id="cashierLoadTitle" style="font-size: 1rem; font-weight: 700;">🟢 حالة المطبخ: عادي</div>
-              <div id="cashierLoadDesc" style="font-size: 0.8rem; color: var(--text-secondary);">تجهيز الطلبات بالسرعة القياسية الطبيعية</div>
+              <div class="banner-load-title" id="cashierLoadTitle">🟢 حالة المطبخ: عادي</div>
+              <div class="banner-load-sub" id="cashierLoadDesc">تجهيز الطلبات بالسرعة القياسية الطبيعية</div>
             </div>
           </div>
-          <div id="cashierLoadTime" style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-tertiary);">محدث الآن</div>
+          <div class="banner-load-timestamp" id="cashierLoadTime">محدث الآن</div>
         </div>
 
-        <!-- 4 LIVE RESTAURANT STATUS MODULES -->
         <div class="kpi-row-grid">
           <div class="metric-card m-avail">
             <div>
               <div class="metric-title" data-i18n="kpiAvail">الأصناف المتوفرة</div>
               <div class="metric-val" id="cashierCountAvail">0</div>
             </div>
-            <div class="metric-icon-box">
-              <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            </div>
+            <svg class="icon" style="color: var(--status-avail);" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
           </div>
-
           <div class="metric-card m-low">
             <div>
               <div class="metric-title" data-i18n="kpiLow">كمية محدودة</div>
               <div class="metric-val" id="cashierCountLow">0</div>
             </div>
-            <div class="metric-icon-box">
-              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-            </div>
+            <svg class="icon" style="color: var(--status-low);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
           </div>
-
           <div class="metric-card m-delay">
             <div>
               <div class="metric-title" data-i18n="kpiDelay">أصناف متأخرة</div>
               <div class="metric-val" id="cashierCountDelay">0</div>
             </div>
-            <div class="metric-icon-box">
-              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            </div>
+            <svg class="icon" style="color: var(--status-delay);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
           </div>
-
           <div class="metric-card m-out">
             <div>
               <div class="metric-title" data-i18n="kpiOut">أصناف نفدت</div>
               <div class="metric-val" id="cashierCountOut">0</div>
             </div>
-            <div class="metric-icon-box">
-              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-            </div>
+            <svg class="icon" style="color: var(--status-out);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
           </div>
         </div>
 
-        <!-- Out of Stock & Delayed Strips -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
-          <!-- Out of Stock Box -->
-          <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--card-shadow);">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-              <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--status-out); display: flex; align-items: center; gap: 0.4rem;">
-                <span>🚫</span> <span data-i18n="outOfStockHeader">الأصناف غير المتوفرة (النافدة)</span>
-              </h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <h3 style="font-size: 0.88rem; font-weight: 700; color: var(--status-out);">🚫 <span data-i18n="outOfStockHeader">الأصناف غير المتوفرة (النافدة)</span></h3>
               <span id="cashierOutBadge" class="kds-status-pill pill-OUT_OF_STOCK">0</span>
             </div>
-            <div id="cashierOutItemsList" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 200px; overflow-y: auto;">
-              <!-- Out items list rendered by JS -->
-            </div>
+            <div id="cashierOutItemsList" style="display: flex; flex-direction: column; gap: 0.4rem; max-height: 180px; overflow-y: auto;"></div>
           </div>
 
-          <!-- Delayed Items Box with Radial Countdowns -->
-          <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--card-shadow);">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-              <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--status-delay); display: flex; align-items: center; gap: 0.4rem;">
-                <span>⏳</span> <span data-i18n="delayedHeader">الأصناف المتأخرة والعد التنازلي</span>
-              </h3>
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <h3 style="font-size: 0.88rem; font-weight: 700; color: var(--status-delay);">⏳ <span data-i18n="delayedHeader">الأصناف المتأخرة والعد التنازلي</span></h3>
               <span id="cashierDelayBadge" class="kds-status-pill pill-DELAYED">0</span>
             </div>
-            <div id="cashierDelayedItemsList" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 200px; overflow-y: auto;">
-              <!-- Delayed items rendered by JS -->
-            </div>
+            <div id="cashierDelayedItemsList" style="display: flex; flex-direction: column; gap: 0.4rem; max-height: 180px; overflow-y: auto;"></div>
           </div>
         </div>
 
-        <!-- Live Menu Table & Search -->
-        <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--card-shadow); margin-bottom: 1.5rem;">
-          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem;">
-            <h3 style="font-size: 1rem; font-weight: 700;" data-i18n="cashierMenuTitle">حالة قائمة الطعام المباشرة</h3>
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+            <h3 style="font-size: 0.95rem; font-weight: 700;" data-i18n="cashierMenuTitle">حالة قائمة الطعام المباشرة</h3>
             <div class="search-field-wrap">
               <input type="text" id="cashierTableSearch" class="search-field" data-i18n-placeholder="phSearchTable" placeholder="بحث..." oninput="onCashierSearchChange()" />
-              <button id="cashierSearchClear" class="search-clear-btn" onclick="clearKitchenSearch()">✕</button>
+              <button id="cashierSearchClear" class="search-clear-btn" onclick="clearCashierSearch()">✕</button>
               <svg class="icon icon-sm search-icon-pos" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </div>
           </div>
-
           <div style="overflow-x: auto;">
-            <table style="width: 100%; border-collapse: collapse; text-align: start; font-size: 0.85rem;">
+            <table style="width: 100%; border-collapse: collapse; text-align: start; font-size: 0.82rem;">
               <thead>
-                <tr style="border-bottom: 1px solid var(--border); color: var(--text-tertiary);">
-                  <th style="padding: 0.75rem 0.5rem;" data-i18n="colItem">الصنف</th>
-                  <th style="padding: 0.75rem 0.5rem;" data-i18n="colCategory">القسم</th>
-                  <th style="padding: 0.75rem 0.5rem;" data-i18n="colStatus">الحالة الحالية</th>
-                  <th style="padding: 0.75rem 0.5rem;" data-i18n="colDetails">التفاصيل والوقت</th>
-                  <th style="padding: 0.75rem 0.5rem;" data-i18n="colActions">تواصل سريع</th>
+                <tr style="border-bottom: 1px solid var(--border-subtle); color: var(--text-tertiary);">
+                  <th style="padding: 0.5rem;" data-i18n="colItem">الصنف</th>
+                  <th style="padding: 0.5rem;" data-i18n="colCategory">القسم</th>
+                  <th style="padding: 0.5rem;" data-i18n="colStatus">الحالة الحالية</th>
+                  <th style="padding: 0.5rem;" data-i18n="colDetails">التفاصيل والوقت</th>
+                  <th style="padding: 0.5rem;" data-i18n="colActions">تواصل سريع</th>
                 </tr>
               </thead>
-              <tbody id="cashierTableRows">
-                <!-- Table rows rendered by JS -->
-              </tbody>
+              <tbody id="cashierTableRows"></tbody>
             </table>
           </div>
         </div>
 
-        <!-- QUICK KITCHEN REQUESTS & CHAT COMPOSER -->
-        <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--card-shadow);">
-          <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem;" data-i18n="quickInquiryTitle">استفسار سريع للمطبخ:</h3>
-          
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem;">
+          <h3 style="font-size: 0.88rem; font-weight: 700;" data-i18n="quickInquiryTitle">استفسار سريع للمطبخ:</h3>
           <div class="quick-prompts-row">
             <button class="prompt-chip" data-i18n="promptAvail" onclick="applyCashierPrompt(dictionary[currentLang].promptAvail)">❓ هل الصنف متوفر الآن؟</button>
             <button class="prompt-chip" data-i18n="promptTime" onclick="applyCashierPrompt(dictionary[currentLang].promptTime)">⏳ كم المدة المتوقعة للتجهيز؟</button>
@@ -1923,29 +969,19 @@
             <button class="prompt-chip" data-i18n="promptUpdate" onclick="applyCashierPrompt(dictionary[currentLang].promptUpdate)">🔄 يرجى تحديث حالة المقلقل والمغش</button>
             <button class="prompt-chip" data-i18n="promptCheck" onclick="applyCashierPrompt(dictionary[currentLang].promptCheck)">🔍 يرجى التأكد من الصنف</button>
           </div>
-
-          <!-- Composer Box -->
           <div class="chat-composer-box">
             <div class="chat-input-row">
               <input type="text" id="cashierChatInput" class="chat-text-input" data-i18n-placeholder="phChatInput" placeholder="رسالة مخصصة للمطبخ..." />
               <button class="btn-brand-solid" onclick="submitCashierChatMessage()" data-i18n="sendChat">إرسال للمطبخ</button>
             </div>
           </div>
-
-          <!-- Messages Feed -->
-          <div id="cashierMsgFeed" style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; max-height: 250px; overflow-y: auto;">
-            <!-- Messages rendered by JS -->
-          </div>
+          <div id="cashierMsgFeed" style="display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.75rem; max-height: 200px; overflow-y: auto;"></div>
         </div>
       </div>
 
-      <!-- ====================================================================
-           VIEW 3: ADMIN STATION VIEW
-           ==================================================================== -->
+      <!-- VIEW 3: ADMIN STATION -->
       <div id="adminStationView" class="view-panel">
-        
-        <!-- Controls Bar -->
-        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
           <button class="btn-brand-solid" onclick="openItemCreationModal()">
             <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             <span data-i18n="addNewItemBtn">+ إضافة صنف جديد</span>
@@ -1958,38 +994,28 @@
           </button>
         </div>
 
-        <!-- Admin Item Table -->
-        <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--card-shadow); margin-bottom: 1.5rem;">
-          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem;" data-i18n="adminMenuTitle">إدارة أصناف مطعم خامر</h3>
-          <p style="font-size: 0.8rem; color: var(--text-tertiary); margin-bottom: 1rem;">إضافة وتعديل وحذف أصناف قائمة الطعام والمزامنة مع الكاشير والمطبخ</p>
-          
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;">
+          <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem;" data-i18n="adminMenuTitle">إدارة أصناف مطعم خامر</h3>
           <div style="overflow-x: auto;">
-            <table style="width: 100%; border-collapse: collapse; text-align: start; font-size: 0.85rem;">
+            <table style="width: 100%; border-collapse: collapse; text-align: start; font-size: 0.82rem;">
               <thead>
-                <tr style="border-bottom: 1px solid var(--border); color: var(--text-tertiary);">
-                  <th style="padding: 0.75rem 0.5rem;" data-i18n="colNameAr">الاسم العربي</th>
-                  <th style="padding: 0.75rem 0.5rem;" data-i18n="colNameEn">الاسم الإنجليزي</th>
-                  <th style="padding: 0.75rem 0.5rem;" data-i18n="colCategory">القسم</th>
-                  <th style="padding: 0.75rem 0.5rem;" data-i18n="colPrepTime">وقت التجهيز القياسي</th>
-                  <th style="padding: 0.75rem 0.5rem;" data-i18n="colStatus">الحالة</th>
-                  <th style="padding: 0.75rem 0.5rem;" data-i18n="colActions">الإجراءات</th>
+                <tr style="border-bottom: 1px solid var(--border-subtle); color: var(--text-tertiary);">
+                  <th style="padding: 0.5rem;" data-i18n="colNameAr">الاسم العربي</th>
+                  <th style="padding: 0.5rem;" data-i18n="colNameEn">الاسم الإنجليزي</th>
+                  <th style="padding: 0.5rem;" data-i18n="colCategory">القسم</th>
+                  <th style="padding: 0.5rem;" data-i18n="colPrepTime">وقت التجهيز</th>
+                  <th style="padding: 0.5rem;" data-i18n="colStatus">الحالة</th>
+                  <th style="padding: 0.5rem;" data-i18n="colActions">الإجراءات</th>
                 </tr>
               </thead>
-              <tbody id="adminItemRows">
-                <!-- Rows rendered by JS -->
-              </tbody>
+              <tbody id="adminItemRows"></tbody>
             </table>
           </div>
         </div>
 
-        <!-- Audit Log Timeline -->
-        <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--card-shadow);">
-          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem;" data-i18n="auditLogTitle">سجل النشاط والتواصل المباشر (Audit Log)</h3>
-          <p style="font-size: 0.8rem; color: var(--text-tertiary); margin-bottom: 1rem;">سجل فوري لكافة التغييرات والرسائل والتنبيهات المتبادلة</p>
-          
-          <div class="timeline-wrap" id="adminAuditLogRows">
-            <!-- Timeline rows rendered by JS -->
-          </div>
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem;">
+          <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem;" data-i18n="auditLogTitle">سجل النشاط والتواصل المباشر (Audit Log)</h3>
+          <div id="adminAuditLogRows" style="display: flex; flex-direction: column; gap: 0.4rem; max-height: 250px; overflow-y: auto;"></div>
         </div>
       </div>
     </main>
@@ -2014,56 +1040,52 @@
       </button>
     </nav>
 
-    <!-- PROFILE & STATION SWITCHER SHEET -->
+    <!-- PROFILE SHEET -->
     <div id="profileSheetOverlay" class="modal-overlay" style="display: none;" onclick="closeProfileSheetOnBackdrop(event)">
       <div class="modal-card">
-        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
-          <div class="brand-mark" style="width: 44px; height: 44px; font-size: 1.4rem;">خ</div>
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+          <div class="brand-mark" style="width: 40px; height: 40px; font-size: 1.3rem;">خ</div>
           <div>
-            <div id="sheetUserName" style="font-size: 1.1rem; font-weight: 700;">Chef Ahmed</div>
-            <div id="sheetUserEmail" style="font-size: 0.8rem; color: var(--text-tertiary);">kitchen@khamer.com</div>
+            <div id="sheetUserName" style="font-size: 1rem; font-weight: 700;">Chef Ahmed</div>
+            <div id="sheetUserEmail" style="font-size: 0.78rem; color: var(--text-tertiary);">kitchen@khamer.com</div>
           </div>
         </div>
-
-        <div style="margin-bottom: 1.25rem;">
-          <div style="font-size: 0.8rem; color: var(--text-tertiary); margin-bottom: 0.5rem;" data-i18n="switchStationTitle">تبديل واجهة العمل الحالية:</div>
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
+        <div style="margin-bottom: 1rem;">
+          <div style="font-size: 0.78rem; color: var(--text-tertiary); margin-bottom: 0.4rem;" data-i18n="switchStationTitle">تبديل واجهة العمل:</div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem;">
             <button id="btnSwitchKitchen" class="btn-kds-act" onclick="directSwitchStation('kitchen')">👨‍🍳 <span data-i18n="kitchenNav">المطبخ</span></button>
             <button id="btnSwitchCashier" class="btn-kds-act" onclick="directSwitchStation('cashier')">💵 <span data-i18n="cashierNav">الكاشير</span></button>
             <button id="btnSwitchAdmin" class="btn-kds-act" onclick="directSwitchStation('admin')">👑 <span data-i18n="adminNav">الإدارة</span></button>
           </div>
         </div>
-
-        <div style="border-top: 1px solid var(--border); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
-          <button class="btn-kds-act" style="justify-content: space-between; padding: 0 1rem;" onclick="toggleAudioChimes()">
+        <div style="border-top: 1px solid var(--border-subtle); padding-top: 0.85rem; display: flex; flex-direction: column; gap: 0.4rem;">
+          <button class="btn-kds-act" style="justify-content: space-between; padding: 0 0.85rem;" onclick="toggleAudioChimes()">
             <span>🔔 <span data-i18n="audioAlerts">تنبيهات الصوت</span></span>
             <span id="soundStateLabel" style="color: var(--status-avail);">مفعل</span>
           </button>
-          <button class="btn-kds-act" style="justify-content: space-between; padding: 0 1rem;" onclick="toggleAppLanguage()">
-            <span>🌐 <span data-i18n="language">اللغة / Language</span></span>
+          <button class="btn-kds-act" style="justify-content: space-between; padding: 0 0.85rem;" onclick="toggleAppLanguage()">
+            <span>🌐 <span data-i18n="language">اللغة</span></span>
             <span id="langStateLabel" style="color: var(--brand);">العربية (AR)</span>
           </button>
-          <button class="btn-kds-act" style="justify-content: space-between; padding: 0 1rem;" onclick="toggleAppTheme()">
-            <span>🌗 <span data-i18n="theme">المظهر / Theme</span></span>
-            <span id="themeStateLabel" style="color: var(--text-secondary);">داكن (Dark)</span>
+          <button class="btn-kds-act" style="justify-content: space-between; padding: 0 0.85rem;" onclick="toggleAppTheme()">
+            <span>🌗 <span data-i18n="theme">المظهر</span></span>
+            <span id="themeStateLabel">فاتح (Light)</span>
           </button>
         </div>
-
-        <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
+        <div style="margin-top: 1.25rem; display: flex; gap: 0.5rem;">
           <button class="btn-kds-act" style="flex: 1;" onclick="closeProfileSheet()" data-i18n="close">إغلاق</button>
-          <button class="btn-kds-act" style="flex: 1; background: rgba(239, 68, 68, 0.15); color: #EF4444; border-color: rgba(239, 68, 68, 0.3);" onclick="performUserLogout()" data-i18n="logout">تسجيل الخروج</button>
+          <button class="btn-kds-act" style="flex: 1; background: var(--status-out-bg); color: var(--status-out); border-color: var(--status-out-border);" onclick="performUserLogout()" data-i18n="logout">تسجيل الخروج</button>
         </div>
       </div>
     </div>
 
-    <!-- DELAY DIALOG MODAL -->
+    <!-- DELAY DIALOG -->
     <div id="delayDialogOverlay" class="modal-overlay" style="display: none;" onclick="closeDelayDialogOnBackdrop(event)">
       <div class="modal-card">
-        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.25rem;">⏳ <span data-i18n="delayModalTitle">تأخير في التجهيز</span></h3>
-        <p id="delayTargetItemName" style="font-size: 0.95rem; font-weight: 600; color: var(--brand); margin-bottom: 1rem;">اسم الصنف</p>
-
-        <div style="font-size: 0.8rem; color: var(--text-tertiary); margin-bottom: 0.5rem;" data-i18n="chooseDelayDuration">اختر مدة التأخير المتوقعة:</div>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.25rem;">⏳ <span data-i18n="delayModalTitle">تأخير في التجهيز</span></h3>
+        <p id="delayTargetItemName" style="font-size: 0.9rem; font-weight: 600; color: var(--brand); margin-bottom: 0.85rem;">اسم الصنف</p>
+        <div style="font-size: 0.78rem; color: var(--text-tertiary); margin-bottom: 0.4rem;" data-i18n="chooseDelayDuration">اختر مدة التأخير المتوقعة:</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-bottom: 0.85rem;">
           <button class="btn-kds-act" onclick="submitItemDelay(5)">+5 <span data-i18n="mins5">دقائق</span></button>
           <button class="btn-kds-act" onclick="submitItemDelay(10)">+10 <span data-i18n="mins10">دقائق</span></button>
           <button class="btn-kds-act" onclick="submitItemDelay(15)">+15 <span data-i18n="mins15">دقيقة</span></button>
@@ -2071,84 +1093,73 @@
           <button class="btn-kds-act" onclick="submitItemDelay(30)">+30 <span data-i18n="mins30">دقيقة</span></button>
           <button class="btn-kds-act" onclick="submitItemDelay(45)">+45 <span data-i18n="mins45">دقيقة</span></button>
         </div>
-
-        <div style="margin-bottom: 1.25rem;">
-          <label style="font-size: 0.8rem; color: var(--text-tertiary); display: block; margin-bottom: 0.35rem;" data-i18n="delayReasonLabel">سبب التأخير (اختياري للكاشير):</label>
+        <div style="margin-bottom: 1rem;">
+          <label style="font-size: 0.78rem; color: var(--text-tertiary); display: block; margin-bottom: 0.25rem;" data-i18n="delayReasonLabel">سبب التأخير:</label>
           <input type="text" id="delayCustomReasonInput" class="form-control-input" data-i18n-placeholder="phDelayReason" placeholder="مثال: ضغط طلبات المندي والتنور" />
         </div>
-
-        <div style="display: flex; gap: 0.5rem;">
-          <button class="btn-kds-act" style="flex: 1;" onclick="closeDelayDialog()" data-i18n="cancel">إلغاء</button>
-        </div>
+        <button class="btn-kds-act" style="width: 100%;" onclick="closeDelayDialog()" data-i18n="cancel">إلغاء</button>
       </div>
     </div>
 
-    <!-- OUT OF STOCK MODAL -->
+    <!-- OUT OF STOCK DIALOG -->
     <div id="outDialogOverlay" class="modal-overlay" style="display: none;" onclick="closeOutDialogOnBackdrop(event)">
       <div class="modal-card">
-        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--status-out); margin-bottom: 0.25rem;">🚫 <span data-i18n="outModalTitle">تحديد الصنف كـ نفد</span></h3>
-        <p id="outTargetItemName" style="font-size: 0.95rem; font-weight: 600; color: var(--brand); margin-bottom: 1rem;">اسم الصنف</p>
-
-        <div style="font-size: 0.8rem; color: var(--text-tertiary); margin-bottom: 0.5rem;" data-i18n="outReasonQuick">أسباب شائعة سريعة:</div>
-        <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--status-out); margin-bottom: 0.25rem;">🚫 <span data-i18n="outModalTitle">تحديد الصنف كـ نفد</span></h3>
+        <p id="outTargetItemName" style="font-size: 0.9rem; font-weight: 600; color: var(--brand); margin-bottom: 0.85rem;">اسم الصنف</p>
+        <div style="font-size: 0.78rem; color: var(--text-tertiary); margin-bottom: 0.4rem;" data-i18n="outReasonQuick">أسباب شائعة:</div>
+        <div style="display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.85rem;">
           <button class="prompt-chip" onclick="setQuickOutReason(dictionary[currentLang].outReasonAll)">نفاد الكمية بالكامل</button>
           <button class="prompt-chip" onclick="setQuickOutReason(dictionary[currentLang].outReasonChicken)">نفاد الدجاج الطازج</button>
           <button class="prompt-chip" onclick="setQuickOutReason(dictionary[currentLang].outReasonMeat)">نفاد لحم الحنيذ</button>
           <button class="prompt-chip" onclick="setQuickOutReason(dictionary[currentLang].outReasonRice)">انتظار طبخة الأرز القادمة</button>
         </div>
-
-        <div style="margin-bottom: 1.25rem;">
-          <label style="font-size: 0.8rem; color: var(--text-tertiary); display: block; margin-bottom: 0.35rem;" data-i18n="outReasonCustom">السبب الظاهر للكاشير:</label>
+        <div style="margin-bottom: 1rem;">
+          <label style="font-size: 0.78rem; color: var(--text-tertiary); display: block; margin-bottom: 0.25rem;" data-i18n="outReasonCustom">السبب الظاهر للكاشير:</label>
           <input type="text" id="outCustomReasonInput" class="form-control-input" data-i18n-placeholder="phOutReason" value="نفاد الكمية بالكامل" />
         </div>
-
         <div style="display: flex; gap: 0.5rem;">
           <button class="btn-kds-act" style="flex: 1;" onclick="closeOutDialog()" data-i18n="cancel">إلغاء</button>
-          <button class="btn-brand-solid" style="flex: 1; justify-content: center; background: var(--status-out);" onclick="submitItemOutOfStock()" data-i18n="confirmOutBtn">تأكيد النفاد فوراً</button>
+          <button class="btn-brand-solid" style="flex: 1; justify-content: center; background: var(--status-out);" onclick="submitItemOutOfStock()" data-i18n="confirmOutBtn">تأكيد النفاد</button>
         </div>
       </div>
     </div>
 
-    <!-- EMERGENCY ALERT OVERLAY -->
+    <!-- CRITICAL ALERT OVERLAY -->
     <div id="criticalModalOverlay" class="modal-overlay" style="display: none;">
-      <div class="modal-card critical-modal-card">
-        <svg class="emergency-shield-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-        <h2 id="criticalAlertHeading" style="font-size: 1.4rem; font-weight: 800; color: #EF4444; text-align: center; margin-bottom: 0.5rem;" data-i18n="emergencyTitle">🚨 تنبيه طوارئ للمطعم بالكامل</h2>
-        <p id="criticalAlertBodyText" style="font-size: 0.95rem; text-align: center; color: var(--text-primary); line-height: 1.5; margin-bottom: 1.5rem;" data-i18n="emergencyBody">توقف مؤقت في المطبخ لظرف طارئ. يرجى التوقف عن إدخال طلبات جديدة والتواصل مع الإشراف فوراً.</p>
-        <button class="btn-brand-solid" style="width: 100%; justify-content: center; background: #EF4444;" onclick="dismissEmergencyAlert()" data-i18n="acknowledgeEmergency">✓ استلمت الإشعار وفهمت التعليمات (Acknowledge)</button>
+      <div class="modal-card" style="border: 2px solid var(--status-out); text-align: center;">
+        <h2 id="criticalAlertHeading" style="font-size: 1.25rem; font-weight: 800; color: var(--status-out); margin-bottom: 0.5rem;" data-i18n="emergencyTitle">🚨 تنبيه طوارئ للمطعم بالكامل</h2>
+        <p id="criticalAlertBodyText" style="font-size: 0.88rem; color: var(--text-primary); line-height: 1.45; margin-bottom: 1.25rem;" data-i18n="emergencyBody">توقف مؤقت في المطبخ لظرف طارئ. يرجى التوقف عن إدخال طلبات جديدة والتواصل مع الإشراف فوراً.</p>
+        <button class="btn-brand-solid" style="width: 100%; justify-content: center; background: var(--status-out);" onclick="dismissEmergencyAlert()" data-i18n="acknowledgeEmergency">✓ استلمت الإشعار وفهمت التعليمات</button>
       </div>
     </div>
 
     <!-- NOTIFICATION DRAWER -->
     <div id="notifDrawer" class="modal-overlay" style="display: none;" onclick="closeNotificationDrawer()">
-      <div class="modal-card" style="margin-inline-start: auto; height: 100%; max-width: 380px; border-radius: 0;" onclick="event.stopPropagation()">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-          <h3 style="font-size: 1.1rem; font-weight: 700;">🔔 <span data-i18n="notificationsTitle">التنبيهات المباشرة</span></h3>
+      <div class="modal-card" style="margin-inline-start: auto; height: 100%; max-width: 360px; border-radius: 0;" onclick="event.stopPropagation()">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.85rem;">
+          <h3 style="font-size: 1rem; font-weight: 700;">🔔 <span data-i18n="notificationsTitle">التنبيهات المباشرة</span></h3>
           <button class="btn-header-icon" onclick="closeNotificationDrawer()">✕</button>
         </div>
-        <div id="notifDrawerFeed" style="display: flex; flex-direction: column; gap: 0.5rem; overflow-y: auto; max-height: calc(100vh - 120px);">
-          <!-- Notifications rendered by JS -->
-        </div>
+        <div id="notifDrawerFeed" style="display: flex; flex-direction: column; gap: 0.4rem; overflow-y: auto; max-height: calc(100vh - 100px);"></div>
       </div>
     </div>
 
-    <!-- ADMIN ITEM CREATION / EDIT MODAL -->
+    <!-- ADMIN ITEM MODAL -->
     <div id="adminItemModal" class="modal-overlay" style="display: none;" onclick="closeAdminItemModalOnBackdrop(event)">
       <div class="modal-card">
-        <h3 style="font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem;">🍽️ <span data-i18n="adminModalItemTitle">إضافة / تعديل صنف</span></h3>
-        
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.85rem;">🍽️ <span data-i18n="adminModalItemTitle">إضافة صنف جديد</span></h3>
         <form id="adminItemForm" onsubmit="handleAdminSaveItem(event)">
-          <div style="margin-bottom: 1rem;">
-            <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);" data-i18n="lblAddNameAr">اسم الصنف بالعربي</label>
-            <input type="text" id="adminFormNameAr" class="form-control-input" data-i18n-placeholder="phAddNameAr" placeholder="مثال: مندي دجاج حبة" required />
+          <div style="margin-bottom: 0.75rem;">
+            <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);" data-i18n="lblAddNameAr">اسم الصنف بالعربي</label>
+            <input type="text" id="adminFormNameAr" class="form-control-input" placeholder="مثال: مندي دجاج" required />
           </div>
-          <div style="margin-bottom: 1rem;">
-            <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);" data-i18n="lblAddNameEn">اسم الصنف بالإنجليزي</label>
-            <input type="text" id="adminFormNameEn" class="form-control-input" data-i18n-placeholder="phAddNameEn" placeholder="e.g. Chicken Mandi Whole" required />
+          <div style="margin-bottom: 0.75rem;">
+            <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);" data-i18n="lblAddNameEn">اسم الصنف بالإنجليزي</label>
+            <input type="text" id="adminFormNameEn" class="form-control-input" placeholder="e.g. Chicken Mandi" required />
           </div>
-          <div style="margin-bottom: 1rem;">
-            <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);" data-i18n="lblAddCategory">القسم / التصنيف</label>
-            <select id="adminFormCategory" class="form-control-input" style="height: 46px;">
+          <div style="margin-bottom: 0.75rem;">
+            <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);" data-i18n="lblAddCategory">القسم / التصنيف</label>
+            <select id="adminFormCategory" class="form-control-input">
               <option value="chicken">الدجاج</option>
               <option value="meat">اللحوم</option>
               <option value="seafood">الأسماك</option>
@@ -2161,11 +1172,10 @@
               <option value="catering">الذبائح والولائم</option>
             </select>
           </div>
-          <div style="margin-bottom: 1.5rem;">
-            <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);" data-i18n="lblAddPrepTime">وقت التجهيز القياسي (بالدقائق)</label>
+          <div style="margin-bottom: 1.25rem;">
+            <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);" data-i18n="lblAddPrepTime">وقت التجهيز القياسي (بالدقائق)</label>
             <input type="number" id="adminFormPrepTime" class="form-control-input" value="15" min="1" required />
           </div>
-
           <div style="display: flex; gap: 0.5rem;">
             <button type="button" class="btn-kds-act" style="flex: 1;" onclick="closeAdminItemModal()" data-i18n="cancel">إلغاء</button>
             <button type="submit" class="btn-brand-solid" style="flex: 1; justify-content: center;" data-i18n="saveItemBtn">حفظ الصنف</button>
@@ -2174,9 +1184,8 @@
       </div>
     </div>
 
-    <!-- Toast Notifications Mount -->
-    <div id="toastMount" style="position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 10000; display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none;"></div>
-
+    <!-- TOAST MOUNT -->
+    <div id="toastMount" style="position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); z-index: 10000; display: flex; flex-direction: column; gap: 0.4rem; pointer-events: none;"></div>
   </div>
 
   <script>
@@ -2235,12 +1244,12 @@
         adminMenuTitle: "إدارة أصناف مطعم خامر",
         colNameAr: "الاسم العربي",
         colNameEn: "الاسم الإنجليزي",
-        colPrepTime: "وقت التجهيز القياسي",
+        colPrepTime: "وقت التجهيز",
         auditLogTitle: "سجل النشاط والتواصل المباشر (Audit Log)",
-        switchStationTitle: "تبديل واجهة العمل الحالية:",
+        switchStationTitle: "تبديل واجهة العمل:",
         audioAlerts: "تنبيهات الصوت",
-        language: "اللغة / Language",
-        theme: "المظهر / Theme",
+        language: "اللغة",
+        theme: "المظهر",
         close: "إغلاق",
         logout: "تسجيل الخروج",
         delayModalTitle: "تأخير في التجهيز",
@@ -2251,21 +1260,21 @@
         mins20: "دقيقة",
         mins30: "دقيقة",
         mins45: "دقيقة",
-        delayReasonLabel: "سبب التأخير (اختياري للكاشير):",
+        delayReasonLabel: "سبب التأخير:",
         cancel: "إلغاء",
         outModalTitle: "تحديد الصنف كـ نفد",
-        outReasonQuick: "أسباب شائعة سريعة:",
+        outReasonQuick: "أسباب شائعة:",
         outReasonAll: "نفاد الكمية بالكامل",
         outReasonChicken: "نفاد الدجاج الطازج",
         outReasonMeat: "نفاد لحم الحنيذ",
         outReasonRice: "انتظار طبخة الأرز القادمة",
         outReasonCustom: "السبب الظاهر للكاشير:",
-        confirmOutBtn: "تأكيد النفاد فوراً",
+        confirmOutBtn: "تأكيد النفاد",
         emergencyTitle: "🚨 تنبيه طوارئ للمطعم بالكامل",
         emergencyBody: "توقف مؤقت في المطبخ لظرف طارئ. يرجى التوقف عن إدخال طلبات جديدة والتواصل مع الإشراف فوراً.",
-        acknowledgeEmergency: "✓ استلمت الإشعار وفهمت التعليمات (Acknowledge)",
+        acknowledgeEmergency: "✓ استلمت الإشعار وفهمت التعليمات",
         notificationsTitle: "التنبيهات المباشرة",
-        adminModalItemTitle: "إضافة / تعديل صنف",
+        adminModalItemTitle: "إضافة صنف جديد",
         lblAddNameAr: "اسم الصنف بالعربي",
         lblAddNameEn: "اسم الصنف بالإنجليزي",
         lblAddCategory: "القسم / التصنيف",
@@ -2277,14 +1286,12 @@
         phChatInput: "رسالة مخصصة للمطبخ...",
         phDelayReason: "مثال: ضغط طلبات المندي والتنور",
         phOutReason: "نفاد الكمية بالكامل",
-        phAddNameAr: "مثال: مندي دجاج حبة",
-        phAddNameEn: "e.g. Chicken Mandi Whole",
         status_AVAILABLE: "متوفر",
         status_LOW_STOCK: "كمية محدودة",
         status_DELAYED: "تأخير",
         status_OUT_OF_STOCK: "نفد",
         emptyAllAvail: "جميع الأصناف متوفرة حالياً بالكامل",
-        remaining: "متبقي للتجهيز"
+        remaining: "متبقي"
       },
       en: {
         appName: "Khamer Restaurant",
@@ -2339,7 +1346,7 @@
         adminMenuTitle: "Khamer Menu Management",
         colNameAr: "Arabic Name",
         colNameEn: "English Name",
-        colPrepTime: "Standard Prep Time",
+        colPrepTime: "Prep Time",
         auditLogTitle: "Activity & Live Communication Log",
         switchStationTitle: "Switch Current Station:",
         audioAlerts: "Audio Alerts",
@@ -2355,7 +1362,7 @@
         mins20: "mins",
         mins30: "mins",
         mins45: "mins",
-        delayReasonLabel: "Delay reason (optional for cashier):",
+        delayReasonLabel: "Delay reason:",
         cancel: "Cancel",
         outModalTitle: "Mark Item Out of Stock",
         outReasonQuick: "Quick common reasons:",
@@ -2364,15 +1371,15 @@
         outReasonMeat: "Haneeth meat sold out",
         outReasonRice: "Waiting for next rice batch",
         outReasonCustom: "Reason shown to cashier:",
-        confirmOutBtn: "Confirm Out of Stock Immediately",
+        confirmOutBtn: "Confirm Out of Stock",
         emergencyTitle: "🚨 Whole-Restaurant Emergency Alert",
         emergencyBody: "Temporary stop in the kitchen due to an emergency. Please stop entering new orders and contact supervisor immediately.",
         acknowledgeEmergency: "✓ Acknowledged & Understood",
         notificationsTitle: "Live Notifications",
-        adminModalItemTitle: "Add / Edit Item",
+        adminModalItemTitle: "Add New Item",
         lblAddNameAr: "Arabic Item Name",
         lblAddNameEn: "English Item Name",
-        lblAddCategory: "Category / Classification",
+        lblAddCategory: "Category",
         lblAddPrepTime: "Standard Prep Time (minutes)",
         saveItemBtn: "Save Item",
         phBroadcast: "Instant broadcast to cashiers (e.g. Juice takes 15 min)",
@@ -2381,14 +1388,12 @@
         phChatInput: "Custom message to kitchen...",
         phDelayReason: "e.g. Mandi and Tannour order surge",
         phOutReason: "Completely out of stock",
-        phAddNameAr: "e.g. Chicken Mandi Whole",
-        phAddNameEn: "e.g. Chicken Mandi Whole",
         status_AVAILABLE: "Available",
         status_LOW_STOCK: "Low Stock",
         status_DELAYED: "Delayed",
         status_OUT_OF_STOCK: "Out of Stock",
         emptyAllAvail: "All items currently available in full",
-        remaining: "Remaining Prep Time"
+        remaining: "Remaining"
       }
     };
 
@@ -2421,9 +1426,9 @@
 
     /* 3. APPLICATION STATE */
     let currentLang = localStorage.getItem('khamer_lang') || 'ar';
-    let currentTheme = localStorage.getItem('khamer_theme') || 'dark';
+    let currentTheme = localStorage.getItem('khamer_theme') || 'light';
     let soundEnabled = localStorage.getItem('khamer_sound') !== 'false';
-    let currentStation = 'kitchen'; // 'kitchen' | 'cashier' | 'admin'
+    let currentStation = 'kitchen';
 
     let currentUser = {
       uid: 'staff_kitchen',
@@ -2524,103 +1529,6 @@
       {"id": "cat_4", "nameAr": "صحن ولائم دجاج مشكل (5 حبات)", "nameEn": "Mixed Chicken Feast Platter (5 Birds)", "categoryId": "catering", "prepTime": 60, "price": 210, "status": "AVAILABLE", "outOfStockReason": "", "delayMinutes": 0, "delayUntil": null, "updatedAt": "2026-08-30T12:00:00.000Z"}
     ];
 
-    /* ==========================================================================
-       MOTIONSITES MOTION & INTERACTION HELPERS
-       ========================================================================== */
-    function initCinematicIntro() {
-      const intro = document.getElementById('cinematicIntro');
-      if (!intro) return;
-      if (sessionStorage.getItem('khamer_intro_seen')) {
-        intro.style.display = 'none';
-        return;
-      }
-      setTimeout(() => {
-        skipCinematicIntro();
-      }, 3400);
-    }
-
-    function skipCinematicIntro() {
-      const intro = document.getElementById('cinematicIntro');
-      if (!intro) return;
-      intro.classList.add('hidden');
-      setTimeout(() => {
-        intro.style.display = 'none';
-      }, 800);
-      sessionStorage.setItem('khamer_intro_seen', '1');
-    }
-
-    function initCustomCursor() {
-      const dot = document.getElementById('customCursorDot');
-      const ring = document.getElementById('customCursorRing');
-      if (!dot || !ring) return;
-
-      window.addEventListener('mousemove', (e) => {
-        dot.style.left = e.clientX + 'px';
-        dot.style.top = e.clientY + 'px';
-        ring.style.left = e.clientX + 'px';
-        ring.style.top = e.clientY + 'px';
-      });
-
-      document.addEventListener('mouseover', (e) => {
-        if (e.target.closest('button, a, input, select, .kds-card, .prompt-chip, .metric-card')) {
-          document.body.classList.add('cursor-hover');
-        } else {
-          document.body.classList.remove('cursor-hover');
-        }
-      });
-    }
-
-    function animateSpringCounter(elementId, targetVal) {
-      const el = document.getElementById(elementId);
-      if (!el) return;
-      const current = parseInt(el.textContent, 10) || 0;
-      if (current === targetVal) return;
-
-      let start = current;
-      const startTime = performance.now();
-      const duration = 400;
-
-      function step(now) {
-        const progress = Math.min(1, (now - startTime) / duration);
-        const ease = 1 - Math.pow(1 - progress, 3);
-        const val = Math.round(start + (targetVal - start) * ease);
-        el.textContent = val;
-        if (progress < 1) {
-          requestAnimationFrame(step);
-        } else {
-          el.textContent = targetVal;
-        }
-      }
-      requestAnimationFrame(step);
-    }
-
-    function triggerBridgePulse(type) {
-      const hub = document.getElementById('bridgeHubPulse');
-      if (hub) {
-        hub.style.transform = 'scale(1.25)';
-        hub.style.stroke = '#EF4444';
-        setTimeout(() => {
-          hub.style.transform = 'scale(1)';
-          hub.style.stroke = '#F59E0B';
-        }, 500);
-      }
-    }
-
-    function updateSoundEqualizerUI() {
-      const box = document.getElementById('soundEqBars');
-      if (box) {
-        if (soundEnabled) box.classList.remove('sound-disabled');
-        else box.classList.add('sound-disabled');
-      }
-    }
-
-    window.addEventListener('scroll', () => {
-      const header = document.querySelector('.app-header');
-      if (!header) return;
-      if (window.scrollY > 25) header.classList.add('navbar-scrolled');
-      else header.classList.remove('navbar-scrolled');
-    });
-
     /* 4. AUDIO CHIME ENGINE */
     function playChime(type) {
       if (!soundEnabled) return;
@@ -2631,12 +1539,6 @@
         const t = ctx.currentTime;
         const master = ctx.createGain();
         master.connect(ctx.destination);
-
-        const box = document.getElementById('soundEqBars');
-        if (box) {
-          box.style.transform = 'scale(1.3)';
-          setTimeout(() => { box.style.transform = 'scale(1)'; }, 400);
-        }
 
         if (type === 'critical' || type === 'emergency') {
           master.gain.setValueAtTime(0.35, t);
@@ -2709,10 +1611,6 @@
     });
 
     function launchDashboard() {
-      initCinematicIntro();
-      initCustomCursor();
-      updateSoundEqualizerUI();
-      
       document.getElementById('authStage').style.display = 'none';
       document.getElementById('appShell').style.display = 'block';
       
@@ -2741,7 +1639,6 @@
           snap.forEach(d => msgs.push(d.data()));
           messages = msgs;
           renderMessages();
-          triggerBridgePulse('msg');
         });
         db.collection('notifications').orderBy('timestamp', 'desc').limit(30).onSnapshot(snap => {
           const nts = [];
@@ -2881,7 +1778,7 @@
       container.innerHTML = categories.map(cat => {
         const name = currentLang === 'ar' ? cat.nameAr : cat.nameEn;
         const active = activeCategory === cat.id ? 'active' : '';
-        return `<button class="category-chip ${active}" onclick="filterCategory('${cat.id}')">${name}</button>`;
+        return `<button class="cat-chip ${active}" onclick="filterCategory('${cat.id}')">${name}</button>`;
       }).join('');
     }
 
@@ -2936,8 +1833,6 @@
         const name = currentLang === 'ar' ? item.nameAr : item.nameEn;
         const sub = currentLang === 'ar' ? item.nameEn : item.nameAr;
         const statusLabel = dictionary[currentLang][`status_${item.status}`] || item.status;
-        const cat = categories.find(c => c.id === item.categoryId);
-        const catName = cat ? (currentLang === 'ar' ? cat.nameAr : cat.nameEn) : item.categoryId;
 
         return `
           <div class="kds-card status-${item.status}">
@@ -2946,25 +1841,15 @@
                 <div>
                   <div class="kds-item-title">${name}</div>
                   <div class="kds-item-sub">${sub}</div>
-                  <div class="kds-badges-row">
-                    <span class="kds-meta-pill">🏷️ ${catName}</span>
-                    <span class="kds-meta-pill">⏱️ ${item.prepTime || 15} دقيقة</span>
-                  </div>
                 </div>
                 <span class="kds-status-pill pill-${item.status}">${statusLabel}</span>
               </div>
 
               ${item.status === 'DELAYED' ? `
-                <div class="delay-radial-box">
-                  <div class="radial-svg-wrap">
-                    <svg viewBox="0 0 36 36">
-                      <path class="radial-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                      <path id="radial_${item.id}" class="radial-progress" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                    </svg>
-                  </div>
+                <div class="delay-meter-box" style="margin-top: 0.5rem;">
                   <div>
-                    <span class="radial-sub">${dictionary[currentLang].remaining || 'متبقي للتجهيز'}</span>
-                    <div class="radial-digits" id="timer_${item.id}">--:--</div>
+                    <span style="font-size: 0.7rem; color: var(--text-tertiary); display: block;">${dictionary[currentLang].remaining}</span>
+                    <span class="delay-digits" id="timer_${item.id}">--:--</span>
                   </div>
                   <div class="delay-bump-row">
                     <button class="btn-bump" onclick="bumpDelay('${item.id}', 5)">+5m</button>
@@ -2975,7 +1860,7 @@
               ` : ''}
 
               ${item.status === 'OUT_OF_STOCK' && item.outOfStockReason ? `
-                <div style="font-size: 0.78rem; color: var(--status-out); font-weight: 600; margin-top: 0.5rem; background: rgba(239, 68, 68, 0.08); padding: 0.35rem 0.65rem; border-radius: var(--radius-sm); border: 1px solid rgba(239, 68, 68, 0.2);">
+                <div style="font-size: 0.75rem; color: var(--status-out); font-weight: 600; margin-top: 0.4rem;">
                   ⚠️ ${item.outOfStockReason}
                 </div>
               ` : ''}
@@ -3014,10 +1899,10 @@
       const delay = menuItems.filter(i => i.status === 'DELAYED').length;
       const out = menuItems.filter(i => i.status === 'OUT_OF_STOCK').length;
 
-      animateSpringCounter('cashierCountAvail', avail);
-      animateSpringCounter('cashierCountLow', low);
-      animateSpringCounter('cashierCountDelay', delay);
-      animateSpringCounter('cashierCountOut', out);
+      document.getElementById('cashierCountAvail').textContent = avail;
+      document.getElementById('cashierCountLow').textContent = low;
+      document.getElementById('cashierCountDelay').textContent = delay;
+      document.getElementById('cashierCountOut').textContent = out;
 
       document.getElementById('cashierOutBadge').textContent = out;
       document.getElementById('cashierDelayBadge').textContent = delay;
@@ -3025,12 +1910,12 @@
       const outList = document.getElementById('cashierOutItemsList');
       const outItems = menuItems.filter(i => i.status === 'OUT_OF_STOCK');
       outList.innerHTML = outItems.length === 0 ? `<p style="text-align: center; color: var(--text-tertiary); font-size: 0.85rem; padding: 1rem;">${dictionary[currentLang].emptyAllAvail}</p>` : outItems.map(i => `
-        <div class="alert-strip-item is-out" style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: var(--radius-sm);">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background: var(--bg-subtle); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
           <div>
-            <div style="font-weight: 700; font-size: 0.9rem;">${currentLang === 'ar' ? i.nameAr : i.nameEn}</div>
-            <div style="font-size: 0.75rem; color: var(--status-out);">${i.outOfStockReason || 'نفاد الكمية'}</div>
+            <div style="font-weight: 700; font-size: 0.85rem;">${currentLang === 'ar' ? i.nameAr : i.nameEn}</div>
+            <div style="font-size: 0.72rem; color: var(--status-out);">${i.outOfStockReason || 'نفاد الكمية'}</div>
           </div>
-          <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-tertiary);">
+          <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-tertiary);">
             ${new Date(i.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </span>
         </div>
@@ -3039,15 +1924,12 @@
       const delayList = document.getElementById('cashierDelayedItemsList');
       const delayedItems = menuItems.filter(i => i.status === 'DELAYED');
       delayList.innerHTML = delayedItems.length === 0 ? `<p style="text-align: center; color: var(--text-tertiary); font-size: 0.85rem; padding: 1rem;">لا يوجد تأخير حالياً</p>` : delayedItems.map(i => `
-        <div class="alert-strip-item is-delay" style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; background: rgba(249, 115, 22, 0.08); border: 1px solid rgba(249, 115, 22, 0.2); border-radius: var(--radius-sm);">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background: var(--bg-subtle); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
           <div>
-            <div style="font-weight: 700; font-size: 0.9rem;">${currentLang === 'ar' ? i.nameAr : i.nameEn}</div>
-            <div style="font-size: 0.75rem; color: var(--status-delay);">تأخير تقريبي ${i.delayMinutes} دقيقة</div>
+            <div style="font-weight: 700; font-size: 0.85rem;">${currentLang === 'ar' ? i.nameAr : i.nameEn}</div>
+            <div style="font-size: 0.72rem; color: var(--status-delay);">تأخير تقريبي ${i.delayMinutes} دقيقة</div>
           </div>
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="font-size: 0.7rem; color: var(--text-tertiary);">متبقي:</span>
-            <div class="radial-digits" id="cTimer_${i.id}">--:--</div>
-          </div>
+          <div class="delay-digits" id="cTimer_${i.id}">--:--</div>
         </div>
       `).join('');
     }
@@ -3076,24 +1958,14 @@
       tbody.innerHTML = items.map(item => {
         const cat = categories.find(c => c.id === item.categoryId);
         const catName = cat ? (currentLang === 'ar' ? cat.nameAr : cat.nameEn) : item.categoryId;
-        const statusLabel = dictionary[currentLang][`status_${item.status}`] || item.status;
-        let detailText = `⏱️ ${item.prepTime || 15} دقيقة`;
-        if (item.status === 'DELAYED') {
-          detailText = `⏳ تأخير: ${item.delayMinutes} دقيقة`;
-        } else if (item.status === 'OUT_OF_STOCK') {
-          detailText = `🚫 ${item.outOfStockReason || 'نفاد الكمية'}`;
-        }
-
         return `
-        <tr style="border-bottom: 1px solid var(--border); transition: background 0.2s;">
-          <td style="padding: 0.75rem 0.5rem; font-weight: 700;">${currentLang === 'ar' ? item.nameAr : item.nameEn}</td>
-          <td style="padding: 0.75rem 0.5rem; color: var(--text-secondary);">${catName}</td>
-          <td style="padding: 0.75rem 0.5rem;"><span class="kds-status-pill pill-${item.status}">${statusLabel}</span></td>
-          <td style="padding: 0.75rem 0.5rem; font-size: 0.8rem; color: var(--text-tertiary);">${detailText}</td>
-          <td style="padding: 0.75rem 0.5rem;">
-            <button class="prompt-chip" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;" onclick="applyCashierPrompt('استفسار بخصوص: ${currentLang === 'ar' ? item.nameAr : item.nameEn}')">
-              💬 استفسار
-            </button>
+        <tr style="border-bottom: 1px solid var(--border-subtle);">
+          <td style="padding: 0.5rem; font-weight: 700;">${currentLang === 'ar' ? item.nameAr : item.nameEn}</td>
+          <td style="padding: 0.5rem; color: var(--text-secondary);">${catName}</td>
+          <td style="padding: 0.5rem;"><span class="kds-status-pill pill-${item.status}">${dictionary[currentLang][`status_${item.status}`] || item.status}</span></td>
+          <td style="padding: 0.5rem; font-size: 0.75rem; color: var(--text-tertiary);">${item.status === 'DELAYED' ? `تأخير: ${item.delayMinutes}د` : item.status === 'OUT_OF_STOCK' ? (item.outOfStockReason || 'نفد') : 'طبيعي'}</td>
+          <td style="padding: 0.5rem;">
+            <button class="prompt-chip" style="padding: 0.2rem 0.5rem; font-size: 0.72rem;" onclick="applyCashierPrompt('استفسار بخصوص: ${currentLang === 'ar' ? item.nameAr : item.nameEn}')">استفسار</button>
           </td>
         </tr>
       `;
@@ -3104,14 +1976,14 @@
       const tbody = document.getElementById('adminItemRows');
       if (!tbody) return;
       tbody.innerHTML = menuItems.map(item => `
-        <tr style="border-bottom: 1px solid var(--border);">
-          <td style="padding: 0.75rem 0.5rem; font-weight: 700;">${item.nameAr}</td>
-          <td style="padding: 0.75rem 0.5rem;">${item.nameEn}</td>
-          <td style="padding: 0.75rem 0.5rem;">${item.categoryId}</td>
-          <td style="padding: 0.75rem 0.5rem; font-family: var(--font-mono);">${item.prepTime} دقيقة</td>
-          <td style="padding: 0.75rem 0.5rem;"><span class="kds-status-pill pill-${item.status}">${dictionary[currentLang][`status_${item.status}`] || item.status}</span></td>
-          <td style="padding: 0.75rem 0.5rem;">
-            <button class="prompt-chip" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; color: var(--status-out);" onclick="removeMenuItem('${item.id}')">حذف</button>
+        <tr style="border-bottom: 1px solid var(--border-subtle);">
+          <td style="padding: 0.5rem; font-weight: 700;">${item.nameAr}</td>
+          <td style="padding: 0.5rem;">${item.nameEn}</td>
+          <td style="padding: 0.5rem;">${item.categoryId}</td>
+          <td style="padding: 0.5rem; font-family: var(--font-mono);">${item.prepTime} دقيقة</td>
+          <td style="padding: 0.5rem;"><span class="kds-status-pill pill-${item.status}">${dictionary[currentLang][`status_${item.status}`] || item.status}</span></td>
+          <td style="padding: 0.5rem;">
+            <button class="prompt-chip" style="padding: 0.2rem 0.5rem; font-size: 0.72rem; color: var(--status-out);" onclick="removeMenuItem('${item.id}')">حذف</button>
           </td>
         </tr>
       `).join('');
@@ -3120,16 +1992,13 @@
     function renderAuditLogs() {
       const container = document.getElementById('adminAuditLogRows');
       if (!container) return;
-      container.innerHTML = auditLogs.slice(0, 20).map(log => `
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content-card">
-            <div class="timeline-meta">
-              <span style="font-weight: 700; color: var(--brand);">${log.user} (${log.station})</span>
-              <span style="font-family: var(--font-mono);">${new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
-            </div>
-            <div style="font-size: 0.85rem;">${log.action}</div>
+      container.innerHTML = auditLogs.slice(0, 15).map(log => `
+        <div style="padding: 0.4rem 0.6rem; background: var(--bg-subtle); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); font-size: 0.78rem;">
+          <div style="display: flex; justify-content: space-between; color: var(--text-tertiary); font-size: 0.7rem; margin-bottom: 0.15rem;">
+            <span>${log.user} (${log.station})</span>
+            <span style="font-family: var(--font-mono);">${new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
           </div>
+          <div>${log.action}</div>
         </div>
       `).join('');
     }
@@ -3138,12 +2007,12 @@
       const kFeed = document.getElementById('kitchenMsgFeed');
       const cFeed = document.getElementById('cashierMsgFeed');
       const html = messages.slice(0, 15).map(m => `
-        <div style="padding: 0.5rem 0.75rem; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-sm);">
-          <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: 0.2rem;">
+        <div style="padding: 0.4rem 0.6rem; background: var(--bg-subtle); border-radius: var(--radius-sm); font-size: 0.8rem;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-tertiary); margin-bottom: 0.15rem;">
             <span style="font-weight: 700; color: var(--brand);">${m.sender}</span>
             <span style="font-family: var(--font-mono);">${new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
           </div>
-          <div style="font-size: 0.85rem;">${m.text}</div>
+          <div>${m.text}</div>
         </div>
       `).join('');
 
@@ -3156,10 +2025,10 @@
     function renderNotifications() {
       const feed = document.getElementById('notifDrawerFeed');
       if (feed) {
-        feed.innerHTML = notifications.slice(0, 25).map(n => `
-          <div style="padding: 0.65rem 0.85rem; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-sm);">
-            <div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.2rem;">${n.title}</div>
-            <div style="font-size: 0.8rem; color: var(--text-secondary);">${n.body}</div>
+        feed.innerHTML = notifications.slice(0, 20).map(n => `
+          <div style="padding: 0.5rem 0.75rem; background: var(--bg-subtle); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+            <div style="font-size: 0.82rem; font-weight: 700;">${n.title}</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">${n.body}</div>
           </div>
         `).join('');
       }
@@ -3204,7 +2073,6 @@
       appendAuditLog(`تغيير حالة "${currentLang === 'ar' ? item.nameAr : item.nameEn}" من ${oldStatus} إلى ${newStatus}`);
       renderAllViews();
       pushToast(`تم تحديث حالة الصنف: ${dictionary[currentLang][`status_${newStatus}`] || newStatus}`);
-      triggerBridgePulse('status');
     }
 
     function openDelayDialog(itemId) {
@@ -3263,44 +2131,6 @@
     }
 
     function setKitchenLoadStatus(status) {
-      // Update Circular Command Visualization
-      const cmd = document.getElementById('kitchenPressureCommand');
-      const emojiEl = document.getElementById('pressureEmoji');
-      const stateTextEl = document.getElementById('pressureStateText');
-      const titleEl = document.getElementById('pressureDynamicTitle');
-      const descEl = document.getElementById('pressureDynamicDesc');
-      const ring = document.getElementById('pressureRingProgress');
-
-      if (cmd) {
-        cmd.className = `kitchen-pressure-command pressure-${status}`;
-        if (status === 'normal') {
-          if (emojiEl) emojiEl.textContent = '🟢';
-          if (stateTextEl) stateTextEl.textContent = 'طبيعي';
-          if (titleEl) titleEl.textContent = '🟢 حالة المطبخ: عادي';
-          if (descEl) descEl.textContent = 'تجهيز الطلبات بالسرعة القياسية الطبيعية';
-          if (ring) { ring.style.strokeDashoffset = '66'; ring.style.stroke = 'var(--status-avail)'; }
-        } else if (status === 'busy') {
-          if (emojiEl) emojiEl.textContent = '🟡';
-          if (stateTextEl) stateTextEl.textContent = 'مشغول';
-          if (titleEl) titleEl.textContent = '🟡 حالة المطبخ: مشغول';
-          if (descEl) descEl.textContent = 'إقبال متزايد — قد يستغرق التجهيز وقتاً أطول بقليل';
-          if (ring) { ring.style.strokeDashoffset = '44'; ring.style.stroke = 'var(--status-low)'; }
-        } else if (status === 'very_busy') {
-          if (emojiEl) emojiEl.textContent = '🟠';
-          if (stateTextEl) stateTextEl.textContent = 'ضغط عالي';
-          if (titleEl) titleEl.textContent = '🟠 حالة المطبخ: ضغط عالي جداً';
-          if (descEl) descEl.textContent = 'ضغط عالي جداً — يرجى تنبيه الزبائن بوجود تأخير';
-          if (ring) { ring.style.strokeDashoffset = '20'; ring.style.stroke = 'var(--status-delay)'; }
-        } else if (status === 'stopped') {
-          if (emojiEl) emojiEl.textContent = '🔴';
-          if (stateTextEl) stateTextEl.textContent = 'متوقف مؤقتاً';
-          if (titleEl) titleEl.textContent = '🔴 حالة المطبخ: متوقف مؤقتاً';
-          if (descEl) descEl.textContent = 'المطبخ متوقف مؤقتاً لصيانة أو ظرف طارئ!';
-          if (ring) { ring.style.strokeDashoffset = '0'; ring.style.stroke = 'var(--status-out)'; }
-        }
-      }
-      triggerBridgePulse('status');
-
       ['Normal', 'Busy', 'VeryBusy', 'Stopped'].forEach(s => {
         const el = document.getElementById(`wChip${s}`);
         if (el) el.classList.remove('active');
@@ -3375,7 +2205,6 @@
       document.getElementById('kitchenBroadcastInput').value = '';
       playChime('normal');
       pushToast("تم إرسال التعميم الفوري لكافة الكاشيرات");
-      triggerBridgePulse('broadcast');
     }
 
     function applyCashierPrompt(prompt) {
@@ -3403,7 +2232,6 @@
       document.getElementById('cashierChatInput').value = '';
       playChime('normal');
       pushToast("تم إرسال الرسالة للمطبخ");
-      triggerBridgePulse('chat');
     }
 
     /* 10. TIMERS & AUDIT */
@@ -3430,19 +2258,6 @@
             else el.classList.remove('overdue');
           }
         });
-
-        // Update radial SVG ring progress
-        const radialRing = document.getElementById(`radial_${item.id}`);
-        if (radialRing) {
-          const totalDuration = (item.delayMinutes || 15) * 60 * 1000;
-          const progress = Math.max(0, Math.min(100, Math.round((diff / totalDuration) * 100)));
-          radialRing.style.strokeDasharray = `${progress}, 100`;
-          if (diff < 180000) {
-            radialRing.style.stroke = 'var(--status-out)';
-          } else {
-            radialRing.style.stroke = 'var(--status-delay)';
-          }
-        }
       });
     }
 
@@ -3462,10 +2277,8 @@
       if (!mount) return;
       const t = document.createElement('div');
       t.className = 'prompt-chip';
-      t.style.background = 'rgba(11, 11, 11, 0.9)';
-      t.style.color = '#FFFFFF';
-      t.style.border = '1px solid var(--border)';
-      t.style.boxShadow = '0 10px 30px rgba(0,0,0,0.8)';
+      t.style.background = 'var(--bg-surface)';
+      t.style.boxShadow = 'var(--shadow-lg)';
       t.textContent = text;
       mount.appendChild(t);
       setTimeout(() => {
@@ -3494,7 +2307,6 @@
         lbl.textContent = soundEnabled ? 'مفعل' : 'معطل';
         lbl.style.color = soundEnabled ? 'var(--status-avail)' : 'var(--text-tertiary)';
       }
-      updateSoundEqualizerUI();
       pushToast(soundEnabled ? "تم تفعيل التنبيهات الصوتية" : "تم كتم الصوت");
     }
 
@@ -3509,8 +2321,6 @@
       document.documentElement.lang = lang;
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
-      const headerLang = document.getElementById('langHeaderLabel');
-      if (headerLang) headerLang.textContent = lang === 'ar' ? 'EN' : 'AR';
       const sheetLang = document.getElementById('langStateLabel');
       if (sheetLang) sheetLang.textContent = lang === 'ar' ? 'العربية (AR)' : 'English (EN)';
 
@@ -3566,7 +2376,6 @@
     function dispatchTestAlert() {
       playChime('critical');
       pushToast("🔔 تنبيه تجريبي: تم فحص الصوت ومزامنة الجسر بنجاح!");
-      triggerBridgePulse('test');
     }
 
     function openItemCreationModal() {
