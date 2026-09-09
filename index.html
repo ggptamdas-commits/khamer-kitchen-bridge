@@ -1523,6 +1523,68 @@
       font-size: 0.75rem;
       white-space: nowrap;
     }
+
+    /* Voice Search & Shift Report */
+    .btn-mic-search {
+      position: absolute;
+      top: 50%;
+      inset-inline-end: 2.2rem;
+      transform: translateY(-50%);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-mic-search:hover {
+      color: var(--brand);
+      border-color: var(--brand);
+    }
+    .btn-mic-search.listening {
+      background: var(--status-out);
+      color: #fff;
+      border-color: var(--status-out);
+      animation: mic-pulse 1s infinite alternate;
+    }
+    @keyframes mic-pulse {
+      from { transform: translateY(-50%) scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+      to { transform: translateY(-50%) scale(1.15); box-shadow: 0 0 12px 3px rgba(239, 68, 68, 0.7); }
+    }
+
+    .report-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    @media (min-width: 600px) {
+      .report-summary-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    .report-stat-box {
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-subtle);
+      text-align: center;
+    }
+    .report-stat-num {
+      font-size: 1.4rem;
+      font-weight: 800;
+      font-family: var(--font-num);
+    }
+    .report-stat-label {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
   </style>
 </head>
 <body>
@@ -1632,6 +1694,9 @@
         <div class="search-field-wrap">
           <svg class="icon icon-sm search-field-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           <input type="text" id="kitchenSearchInput" class="search-field-input" data-i18n-placeholder="phSearchItem" placeholder="بحث صنف..." oninput="handleKitchenSearchInput(this)" />
+          <button id="btnKitchenVoiceSearch" class="btn-mic-search" onclick="toggleVoiceSearch()" data-i18n-title="voiceSearchTitle" title="البحث الصوتي (تحدث باسم الصنف)">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+          </button>
           <button id="kitchenSearchClearBtn" class="search-clear-btn" onclick="clearKitchenSearch()">✕</button>
         </div>
         <div id="kitchenCategoryChips" style="display: flex; gap: 0.4rem;"></div>
@@ -1790,6 +1855,7 @@
           <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
             <button class="btn-outline-neutral" onclick="seedOfficialDemoData()" data-i18n="seedDemoBtn">استعادة القائمة الكاملة (66 صنف)</button>
             <button class="btn-brand-solid" onclick="openAddItemModal()" data-i18n="addNewItemBtn">+ إضافة صنف جديد</button>
+            <button class="btn-outline-neutral" onclick="openShiftReportModal()" data-i18n="shiftReportBtn">📊 تقرير ملخص الوردية</button>
           </div>
         </div>
         <div class="table-scroll-wrap">
@@ -1894,6 +1960,45 @@
         <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
         <span data-i18n="logoutBtn">تسجيل الخروج من الحساب</span>
       </button>
+    </div>
+  </div>
+
+  <!-- ================= SHIFT REPORT MODAL ================= -->
+  <div id="shiftReportModalBackdrop" class="modal-backdrop">
+    <div class="modal-dialog" style="max-width: 580px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+        <div>
+          <h3 style="font-size: 1.1rem; font-weight: 800;" data-i18n="shiftReportModalTitle">تقرير وملخص أداء الوردية</h3>
+          <p style="font-size: 0.75rem; color: var(--text-secondary);" id="shiftReportDate">--</p>
+        </div>
+        <button class="btn-header-icon" onclick="closeShiftReportModal()">✕</button>
+      </div>
+
+      <div class="report-summary-grid">
+        <div class="report-stat-box">
+          <div class="report-stat-num" id="repStatTotal">66</div>
+          <div class="report-stat-label" data-i18n="statTotalDishes">إجمالي الأصناف</div>
+        </div>
+        <div class="report-stat-box" style="border-color: var(--status-out); background: var(--status-out-bg);">
+          <div class="report-stat-num" style="color: var(--status-out);" id="repStatOut">0</div>
+          <div class="report-stat-label" data-i18n="statOutCount">الأصناف النافدة</div>
+        </div>
+        <div class="report-stat-box" style="border-color: var(--status-delay); background: var(--status-delay-bg);">
+          <div class="report-stat-num" style="color: var(--status-delay);" id="repStatDelay">0</div>
+          <div class="report-stat-label" data-i18n="statDelayCount">الأصناف المتأخرة</div>
+        </div>
+        <div class="report-stat-box" style="border-color: var(--status-low); background: var(--status-low-bg);">
+          <div class="report-stat-num" style="color: var(--status-low);" id="repStatLow">0</div>
+          <div class="report-stat-label" data-i18n="statLowCount">كمية محدودة</div>
+        </div>
+      </div>
+
+      <div id="repDetailsContainer" style="max-height: 220px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px; padding: 0.5rem; margin-bottom: 1rem;"></div>
+
+      <div style="display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap;">
+        <button class="btn-outline-neutral" onclick="printShiftReport()" data-i18n="printReportBtn">🖨️ طباعة التقرير</button>
+        <button class="btn-brand-solid" onclick="exportShiftReportCSV()" data-i18n="exportCsvBtn">📥 تصدير ملف CSV</button>
+      </div>
     </div>
   </div>
 
@@ -2195,6 +2300,15 @@
     /* 5. MULTILINGUAL DICTIONARY */
     const dictionary = {
       ar: {
+        voiceSearchTitle: "البحث الصوتي (تحدث باسم الصنف)",
+        shiftReportBtn: "📊 تقرير ملخص الوردية",
+        shiftReportModalTitle: "تقرير وملخص أداء الوردية",
+        exportCsvBtn: "📥 تصدير ملف CSV",
+        printReportBtn: "🖨️ طباعة التقرير",
+        statTotalDishes: "إجمالي الأصناف",
+        statOutCount: "الأصناف النافدة",
+        statDelayCount: "الأصناف المتأخرة",
+        statLowCount: "أصناف كمية محدودة",
         shiftNoteTitle: "ملاحظات الشفت / تسليم الوردية:",
         defaultShiftNote: "جاهزية تامة لخدمات المندي والحنيذ والأسماك الطازجة",
         editShiftNoteBtn: "تعديل الملاحظة",
@@ -2330,6 +2444,15 @@
         deleteBtn: "حذف"
       },
       en: {
+        voiceSearchTitle: "Voice Search (Speak dish name)",
+        shiftReportBtn: "📊 Shift Operations Report",
+        shiftReportModalTitle: "Shift Operations & Stockout Report",
+        exportCsvBtn: "📥 Export to CSV",
+        printReportBtn: "🖨️ Print Report",
+        statTotalDishes: "Total Dishes",
+        statOutCount: "Out of Stock",
+        statDelayCount: "Delayed Items",
+        statLowCount: "Limited Portions",
         shiftNoteTitle: "Shift Handover Notes:",
         defaultShiftNote: "Full readiness for Mandi, Haneeth & fresh seafood services",
         editShiftNoteBtn: "Edit Memo",
@@ -3028,6 +3151,171 @@
 
     /* 11. INTERACTIVE ACTIONS & DIALOGS */
     
+    // ================= Web Speech API Voice Search Engine =================
+    let speechRecognition = null;
+    let isListening = false;
+
+    function initSpeechRecognition() {
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRec) return null;
+      const sr = new SpeechRec();
+      sr.continuous = false;
+      sr.interimResults = false;
+      sr.lang = currentLang === 'ar' ? 'ar-SA' : 'en-US';
+
+      sr.onstart = () => {
+        isListening = true;
+        const btn = document.getElementById('btnKitchenVoiceSearch');
+        if (btn) btn.classList.add('listening');
+        pushToast(
+          currentLang === 'ar' ? '🎙️ جارٍ الاستماع...' : '🎙️ Listening...',
+          currentLang === 'ar' ? 'تحدث باسم الصنف الآن' : 'Speak dish name now',
+          'INFO'
+        );
+      };
+
+      sr.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        const input = document.getElementById('kitchenSearchInput');
+        if (input) {
+          input.value = transcript;
+          handleKitchenSearchInput(input);
+        }
+        pushToast(
+          currentLang === 'ar' ? 'تم التعرف على الصوت' : 'Voice Recognized',
+          `"${transcript}"`,
+          'INFO'
+        );
+      };
+
+      sr.onerror = (event) => {
+        console.warn('[Speech] Recognition error:', event.error);
+        stopVoiceSearch();
+      };
+
+      sr.onend = () => {
+        stopVoiceSearch();
+      };
+
+      return sr;
+    }
+
+    function toggleVoiceSearch() {
+      if (isListening) {
+        stopVoiceSearch();
+      } else {
+        startVoiceSearch();
+      }
+    }
+
+    function startVoiceSearch() {
+      try {
+        speechRecognition = initSpeechRecognition();
+        if (!speechRecognition) {
+          alert(currentLang === 'ar' ? 'ميزة التعرف الصوتي غير مدعومة في متصفحك الحالي' : 'Voice recognition not supported in this browser');
+          return;
+        }
+        speechRecognition.start();
+      } catch (e) {
+        console.warn('[Speech] Start error:', e);
+        stopVoiceSearch();
+      }
+    }
+
+    function stopVoiceSearch() {
+      isListening = false;
+      if (speechRecognition) {
+        try { speechRecognition.stop(); } catch (e) {}
+        speechRecognition = null;
+      }
+      const btn = document.getElementById('btnKitchenVoiceSearch');
+      if (btn) btn.classList.remove('listening');
+    }
+
+    // ================= Shift Operations & CSV Report Engine =================
+    function openShiftReportModal() {
+      const modal = document.getElementById('shiftReportModalBackdrop');
+      if (!modal) return;
+
+      const outItems = menuItems.filter(i => i.status === 'OUT_OF_STOCK');
+      const delayItems = menuItems.filter(i => i.status === 'DELAYED');
+      const lowItems = menuItems.filter(i => i.status === 'LOW_STOCK');
+
+      document.getElementById('repStatTotal').textContent = menuItems.length;
+      document.getElementById('repStatOut').textContent = outItems.length;
+      document.getElementById('repStatDelay').textContent = delayItems.length;
+      document.getElementById('repStatLow').textContent = lowItems.length;
+
+      const dStr = new Date().toLocaleString(currentLang === 'ar' ? 'ar-SA' : 'en-US', {
+        dateStyle: 'full',
+        timeStyle: 'short'
+      });
+      document.getElementById('shiftReportDate').textContent = dStr;
+
+      const container = document.getElementById('repDetailsContainer');
+      const allIssues = [...outItems, ...delayItems, ...lowItems];
+      if (allIssues.length === 0) {
+        container.innerHTML = `<p style="text-align: center; color: var(--text-tertiary); padding: 1.5rem;">${dictionary[currentLang].emptyAllAvail}</p>`;
+      } else {
+        container.innerHTML = allIssues.map(i => `
+          <div class="alert-strip-item is-${i.status === 'OUT_OF_STOCK' ? 'out' : i.status === 'DELAYED' ? 'delay' : 'low'}" style="margin-bottom: 0.35rem;">
+            <div>
+              <div class="alert-strip-name">${currentLang === 'ar' ? i.nameAr : i.nameEn}</div>
+              <div class="alert-strip-reason">${i.outOfStockReason || i.delayReason || (i.status === 'LOW_STOCK' ? `باقي ${i.remainingPortions || 5} وجبات` : '')}</div>
+            </div>
+            <span class="kds-status-pill pill-${i.status}">${dictionary[currentLang]['status_' + i.status] || i.status}</span>
+          </div>
+        `).join('');
+      }
+
+      modal.classList.add('active');
+    }
+
+    function closeShiftReportModal() {
+      document.getElementById('shiftReportModalBackdrop').classList.remove('active');
+    }
+
+    function printShiftReport() {
+      window.print();
+    }
+
+    function exportShiftReportCSV() {
+      const rows = [
+        ["ID", "Name_AR", "Name_EN", "Category", "Status", "PrepTime_Mins", "Remaining_Portions", "Reason", "Last_Updated"]
+      ];
+
+      menuItems.forEach(i => {
+        rows.push([
+          `"${i.id}"`,
+          `"${i.nameAr}"`,
+          `"${i.nameEn}"`,
+          `"${i.categoryId}"`,
+          `"${i.status}"`,
+          i.prepTime || 20,
+          i.remainingPortions || "-",
+          `"${i.outOfStockReason || i.delayReason || ""}"`,
+          `"${i.updatedAt || ""}"`
+        ]);
+      });
+
+      const csvContent = "\uFEFF" + rows.map(e => e.join(",")).join("\n");
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const dateStr = new Date().toISOString().split('T')[0];
+      link.setAttribute("href", url);
+      link.setAttribute("download", `khamer_shift_report_${dateStr}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      pushToast(
+        currentLang === 'ar' ? 'تم تصدير ملف CSV بنجاح' : 'CSV Export Completed',
+        `khamer_shift_report_${dateStr}.csv`,
+        'INFO'
+      );
+    }
+
     // ================= Limited Portion & Shift Handover Engine =================
     let currentShiftNote = "";
 
