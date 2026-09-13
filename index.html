@@ -269,6 +269,23 @@
       flex-shrink: 0;
     }
 
+    .header-clock-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: var(--radius-full);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    @media (max-width: 680px) {
+      .header-clock-pill { display: none; }
+    }
+
     .conn-pill {
       display: inline-flex;
       align-items: center;
@@ -1655,10 +1672,16 @@
 
     <!-- Header Controls -->
     <div class="header-controls">
+      <!-- Live Saudi Digital Clock -->
+      <div id="liveHeaderClock" class="header-clock-pill" data-i18n-title="clockTitle" title="توقيت صبيا / جازان المحلي (AST)">
+        <span class="clock-icon">⏰</span>
+        <span id="headerClockDigits" style="font-family: var(--font-mono); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.5px;">--:--:--</span>
+      </div>
+
       <!-- Session Badge -->
       <div id="headerSessionBadge" class="session-indicator-badge" onclick="filterCurrentSession()" style="cursor: pointer;" data-i18n-title="sessionTitle" title="انقر للفلترة السريعة حسب الفترة">
         <span class="session-dot"></span>
-        <span id="headerSessionText">فترة الخدمة</span>
+        <span id="sessionBadgeText">فترة الخدمة</span>
       </div>
 
       <div id="connPill" class="conn-pill">
@@ -1885,7 +1908,7 @@
         </div>
       </div>
 
-      <!-- Cashier Quick Inquiry to Kitchen -->
+      <!-- Cashier Quick Inquiry Bar -->
       <div class="cashier-inquiry-bar">
         <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.5rem;" data-i18n="messageKitchenTitle">استفسار سريع للمطبخ:</div>
         <div class="quick-prompt-chips">
@@ -1913,6 +1936,7 @@
             <button class="btn-outline-neutral" onclick="seedOfficialDemoData()" data-i18n="seedDemoBtn">استعادة القائمة الكاملة (66 صنف)</button>
             <button class="btn-brand-solid" onclick="openAddItemModal()" data-i18n="addNewItemBtn">+ إضافة صنف جديد</button>
             <button class="btn-outline-neutral" onclick="openShiftReportModal()" data-i18n="shiftReportBtn">📊 تقرير ملخص الوردية</button>
+            <button class="btn-outline-neutral" onclick="confirmResetAllAvailable()" data-i18n="resetAllAvailBtn">🔄 تصفير الكل إلى متوفر</button>
           </div>
         </div>
         <div class="table-scroll-wrap">
@@ -2007,6 +2031,9 @@
         <div class="setting-row">
           <span data-i18n="themeMode">المظهر (Dark/Light)</span>
           <button id="toggleThemeBtn" class="btn-outline-neutral" style="padding: 0.3rem 0.65rem; font-size: 0.75rem;" onclick="toggleTheme()">☀️ فاتح</button>
+        </div>
+        <div class="setting-row" style="font-size: 0.75rem; color: var(--text-tertiary); justify-content: center; text-align: center;" data-i18n="shortcutsTooltip">
+          ⌨️ اختصارات: F1 مطبخ | F2 كاشير | F3 إدارة | / بحث | Esc إغلاق
         </div>
       </div>
 
@@ -2361,6 +2388,13 @@
     /* 5. MULTILINGUAL DICTIONARY */
     const dictionary = {
       ar: {
+        clockTitle: "توقيت صبيا / جازان المحلي (AST)",
+        session_friday_prayer: "🕌 استراحة صلاة الجمعة",
+        session_friday_rush: "👨‍👩‍👧‍👦 ذروة غداء الجمعة العائلي",
+        resetAllAvailBtn: "🔄 تصفير الكل إلى متوفر",
+        resetAllConfirm: "هل أنت متأكد من إعادة تعيين كافة الأصناف إلى 'متوفر' وإلغاء حالات النفاد والتأخير؟",
+        resetAllSuccess: "تمت استعادة توفر كافة الأصناف بنجاح",
+        shortcutsTooltip: "⌨️ اختصارات: F1 مطبخ | F2 كاشير | F3 إدارة | / بحث | Esc إغلاق",
         routeAll: "🏢 كافة الأقسام",
         routeMandi: "🔥 التنور والمندي واللحوم",
         routeSeafood: "🐟 الأسماك والإيدامات",
@@ -2511,6 +2545,13 @@
         deleteBtn: "حذف"
       },
       en: {
+        clockTitle: "Local Sabya / Jazan Time (AST)",
+        session_friday_prayer: "🕌 Friday Prayer Break",
+        session_friday_rush: "👨‍👩‍👧‍👦 Friday Family Lunch Rush",
+        resetAllAvailBtn: "🔄 Reset All to Available",
+        resetAllConfirm: "Are you sure you want to reset all dishes to 'Available' and clear out-of-stock / delay states?",
+        resetAllSuccess: "All menu items successfully marked as Available",
+        shortcutsTooltip: "⌨️ Shortcuts: F1 Kitchen | F2 Cashier | F3 Admin | / Search | Esc Close",
         routeAll: "🏢 All Stations",
         routeMandi: "🔥 Mandi, Grills & Meat",
         routeSeafood: "🐟 Seafood & Stews",
@@ -2666,6 +2707,7 @@
     function initApp() {
       loadSavedState();
       bindGlobalEvents();
+      bindKeyboardShortcuts();
       setupFirebaseListeners();
       applyAppLanguage(currentLang);
       applyAppTheme(currentTheme);
@@ -2673,6 +2715,9 @@
       setInterval(updateMenuSessionBanner, 60000);
       setInterval(updateLatencyPing, 15000);
       updateLatencyPing();
+      updateMenuSessionBanner();
+      setInterval(updateLiveHeaderClock, 1000);
+      updateLiveHeaderClock();
     }
 
     function setupFirebaseListeners() {
@@ -3235,6 +3280,168 @@
 
     /* 11. INTERACTIVE ACTIONS & DIALOGS */
     
+    // ================= Live Local Saudi Digital Clock =================
+    function updateLiveHeaderClock() {
+      const el = document.getElementById('headerClockDigits');
+      if (!el) return;
+      const now = new Date();
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const saudiTime = new Date(utc + (3600000 * 3)); // UTC+3 AST
+      el.textContent = saudiTime.toLocaleTimeString(currentLang === 'ar' ? 'ar-SA' : 'en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      });
+    }
+
+    // ================= Intelligent Saudi Session & Friday Prayer Rules =================
+    function updateMenuSessionBanner() {
+      const badgeText = document.getElementById('sessionBadgeText');
+      const badge = document.getElementById('headerSessionBadge');
+      if (!badgeText) return;
+
+      const now = new Date();
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const saudiTime = new Date(utc + (3600000 * 3));
+      const day = saudiTime.getDay(); // 0 = Sunday, 5 = Friday
+      const hour = saudiTime.getHours();
+      const minute = saudiTime.getMinutes();
+      const timeInMinutes = hour * 60 + minute;
+
+      const dict = dictionary[currentLang];
+
+      // Special Friday (Jumu'ah) rules for Jazan Province
+      if (day === 5) {
+        // Friday Prayer: 11:30 AM to 1:15 PM (690 to 795 mins)
+        if (timeInMinutes >= 690 && timeInMinutes < 795) {
+          badgeText.textContent = dict.session_friday_prayer;
+          if (badge) {
+            badge.style.borderColor = 'var(--status-delay)';
+            badge.style.color = 'var(--status-delay)';
+          }
+          return;
+        }
+        // Friday Family Lunch Rush: 1:15 PM to 4:30 PM (795 to 990 mins)
+        if (timeInMinutes >= 795 && timeInMinutes < 990) {
+          badgeText.textContent = dict.session_friday_rush;
+          if (badge) {
+            badge.style.borderColor = 'var(--brand)';
+            badge.style.color = 'var(--brand)';
+          }
+          return;
+        }
+      }
+
+      // Standard schedule:
+      // Breakfast: 5:00 AM to 10:00 AM
+      if (hour >= 5 && hour < 10) {
+        badgeText.textContent = dict.session_breakfast;
+        if (badge) {
+          badge.style.borderColor = 'var(--status-low)';
+          badge.style.color = 'var(--status-low)';
+        }
+      }
+      // Main Meals (Lunch & Dinner): 10:00 AM to 11:59 PM
+      else if (hour >= 10 && hour < 24) {
+        badgeText.textContent = dict.session_main;
+        if (badge) {
+          badge.style.borderColor = 'var(--brand)';
+          badge.style.color = 'var(--brand)';
+        }
+      }
+      // Late night / closed period: 12:00 AM to 5:00 AM
+      else {
+        badgeText.textContent = dict.session_closed;
+        if (badge) {
+          badge.style.borderColor = 'var(--text-tertiary)';
+          badge.style.color = 'var(--text-tertiary)';
+        }
+      }
+    }
+
+    // ================= Bulk Reset All Dishes to Available =================
+    function confirmResetAllAvailable() {
+      const msg = dictionary[currentLang].resetAllConfirm;
+      if (!confirm(msg)) return;
+
+      const nowStr = new Date().toISOString();
+      menuItems.forEach(item => {
+        if (item.status !== 'DISABLED') {
+          item.status = 'AVAILABLE';
+          item.updatedAt = nowStr;
+          delete item.outOfStockReason;
+          delete item.outOfStockSince;
+          delete item.lastReminderAcknowledged;
+          delete item.delayUntil;
+          delete item.delayReason;
+          delete item.delayMinutes;
+          if (typeof item.remainingPortions === 'number') {
+            item.remainingPortions = 15; // reset portion stock
+          }
+          if (isFirebaseReady && db) {
+            db.collection('menu_items').doc(item.id).set(item, { merge: true });
+          }
+        }
+      });
+
+      saveState();
+      soundEngine.play('NORMAL');
+      appendAuditLog('BULK_RESET', dictionary[currentLang].resetAllSuccess);
+      pushToast(
+        currentLang === 'ar' ? 'تصفير القائمة' : 'Menu Reset',
+        dictionary[currentLang].resetAllSuccess,
+        'INFO'
+      );
+      renderAllViews();
+    }
+
+    // ================= Keyboard Shortcuts for KDS & Cashier POS =================
+    function bindKeyboardShortcuts() {
+      window.addEventListener('keydown', (e) => {
+        // F1: Kitchen Station
+        if (e.key === 'F1') {
+          e.preventDefault();
+          switchActiveView('kitchen');
+          return;
+        }
+        // F2: Cashier Station
+        if (e.key === 'F2') {
+          e.preventDefault();
+          switchActiveView('cashier');
+          return;
+        }
+        // F3: Admin Station
+        if (e.key === 'F3') {
+          e.preventDefault();
+          switchActiveView('admin');
+          return;
+        }
+        // Esc: Close any active modal or clear search
+        if (e.key === 'Escape') {
+          const modals = document.querySelectorAll('.modal-backdrop.active, .sheet-backdrop.active, .sheet-overlay.active');
+          if (modals.length > 0) {
+            modals.forEach(m => m.classList.remove('active'));
+            return;
+          }
+          clearKitchenSearch();
+          clearCashierSearch();
+          return;
+        }
+        // '/': Quick search focus if not already in an input
+        if (e.key === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+          e.preventDefault();
+          const target = currentStation === 'cashier' 
+            ? document.getElementById('cashierTableSearchInput') 
+            : document.getElementById('kitchenSearchInput');
+          if (target) {
+            target.focus();
+            target.select();
+          }
+        }
+      });
+    }
+
     // ================= Kitchen Station Routing & Latency Ping Engine =================
     let activeStationRoute = 'all';
 
@@ -3574,30 +3781,6 @@
           }
         });
       });
-    }
-
-    function updateMenuSessionBanner() {
-      const badge = document.getElementById('headerSessionBadge');
-      const textEl = document.getElementById('headerSessionText');
-      if (!badge || !textEl) return;
-
-      const now = new Date();
-      const saudiHours = (now.getUTCHours() + 3) % 24;
-      const dict = dictionary[currentLang];
-
-      if (saudiHours >= 5 && saudiHours < 10) {
-        textEl.textContent = dict.session_breakfast;
-        badge.style.borderColor = 'var(--status-low)';
-        badge.style.color = 'var(--status-low)';
-      } else if (saudiHours >= 10 && saudiHours < 24) {
-        textEl.textContent = dict.session_main;
-        badge.style.borderColor = 'var(--brand)';
-        badge.style.color = 'var(--brand)';
-      } else {
-        textEl.textContent = dict.session_closed;
-        badge.style.borderColor = 'var(--text-tertiary)';
-        badge.style.color = 'var(--text-tertiary)';
-      }
     }
 
     function changeItemStatus(id, newStatus, extra = {}) {
